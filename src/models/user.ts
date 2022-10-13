@@ -14,6 +14,7 @@ interface UserDoc extends Document {
 
 // an interface describe the properties that a User Model has
 interface UserModel extends Model<UserDoc> {
+    save(arg0: (error: any, doc: any) => void): unknown;
     build(attrs: UserAttrs): UserDoc;
 }
 

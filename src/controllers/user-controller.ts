@@ -1,4 +1,4 @@
-import express, { Request, Response, Application } from "express";
+import express, { Request, Response, Application, NextFunction } from "express";
 import {
     createUserService,
     getAllUserService,
@@ -24,11 +24,18 @@ const getAllUserHandler = async (req: Request, res: Response) => {
     res.status(200).json(users);
 };
 
-const getUserHandler = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    log(id);
-    const user = await getUserService(id);
-    res.status(200).json(user);
+const getUserHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { id } = req.params;
+        const user = await getUserService(id);
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
 };
 
 const updateUserHandler = async (req: Request, res: Response) => {
@@ -37,10 +44,18 @@ const updateUserHandler = async (req: Request, res: Response) => {
     res.status(201).json(updatedUser);
 };
 
-const removeUserHandler = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const removed = await removeUserService(id);
-    res.status(204).json(removed);
+const removeUserHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { id } = req.params;
+        const removed = await removeUserService(id);
+        res.status(204).json(removed);
+    } catch (error) {
+        next(error);
+    }
 };
 
 router.post("/", createUserHandler);

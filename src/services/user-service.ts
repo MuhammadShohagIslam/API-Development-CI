@@ -1,5 +1,6 @@
 import models from "../models";
 import { UserAttrs } from "../models/user";
+import { BadRequestError } from "./../errors/bad-request-error";
 
 const User = models.User;
 
@@ -19,6 +20,9 @@ const getAllUserService = async () => {
 
 const getUserService = async (id: string) => {
     const user = await User.findById({ _id: id }).exec();
+    if (!user) {
+        throw new BadRequestError("User Not Found");
+    }
     return user;
 };
 
@@ -30,8 +34,14 @@ const updateUserService = async (id: string, updateData: UserAttrs) => {
 };
 
 const removeUserService = async (id: string) => {
-    const removeUser = await User.deleteOne({ _id: id });
-    return removeUser;
+    const user = await User.findById({ _id: id }).exec();
+
+    if (user) {
+        const removeUser = await User.deleteOne({ _id: id });
+        console.log(removeUser);
+        return removeUser;
+    }
+    throw new BadRequestError("User Not Found");
 };
 
 export {

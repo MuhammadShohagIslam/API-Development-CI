@@ -5,6 +5,7 @@ import {
     createUserController,
     getAllUserController,
     getUserController,
+    updateUserController,
 } from "./controllers/user-controller";
 
 const app = express();
@@ -14,8 +15,9 @@ app.use([json(), urlencoded({ extended: false })]);
 
 connectWithMongoDB();
 
+app.post("/users", createUserController);
 app.get("/users", getAllUserController);
 app.get("/users/user/:id", getUserController);
-app.post("/", createUserController);
+app.put("/users/user/:id", updateUserController);
 
 export default app;

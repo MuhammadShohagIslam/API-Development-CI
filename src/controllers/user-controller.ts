@@ -1,4 +1,6 @@
 import express, { Request, Response, Application, NextFunction } from "express";
+import { BadRequestError } from "../errors/bad-request-error";
+import userSchema from "../models/model_validation/user";
 import {
     createUserService,
     getAllUserService,
@@ -12,11 +14,22 @@ const router = express.Router();
 // logger
 const log = (msg: any) => console.log(msg);
 
-const createUserHandler = async (req: Request, res: Response) => {
-    log(req.body);
-    const newUser = await createUserService(req.body);
+const createUserHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { error } = userSchema.validate(req.body);
+        if (error) {
+            throw new BadRequestError(`${error}`);
+        }
+        const newUser = await createUserService(req.body);
 
-    res.status(201).json(newUser);
+        res.status(201).json(newUser);
+    } catch (error) {
+        next(error);
+    }
 };
 
 const getAllUserHandler = async (req: Request, res: Response) => {

@@ -1,25 +1,14 @@
 import express from "express";
 import { json, urlencoded } from "body-parser";
 import connectWithMongoDB from "./db/mongo";
-import {
-    createUserController,
-    getAllUserController,
-    getUserController,
-    removeUserController,
-    updateUserController,
-} from "./controllers/user-controller";
+import configureRoutes from "./controllers";
 
 const app = express();
 
 // third-party middleware
 app.use([json(), urlencoded({ extended: false })]);
 
+configureRoutes(app);
 connectWithMongoDB();
-
-app.post("/users", createUserController);
-app.get("/users", getAllUserController);
-app.get("/users/user/:id", getUserController);
-app.put("/users/user/:id", updateUserController);
-app.delete("/users/user/:id", removeUserController);
 
 export default app;

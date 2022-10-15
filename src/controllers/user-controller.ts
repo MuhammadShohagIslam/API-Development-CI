@@ -3,6 +3,7 @@ import {
     createUserService,
     getAllUserService,
     getUserService,
+    removeUserService,
     updateUserService,
 } from "../services/user-service";
 
@@ -34,9 +35,16 @@ const updateUserController = async (req: Request, res: Response) => {
     res.status(201).json(updatedUser);
 };
 
+const removeUserController = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const removed = await removeUserService(id);
+    res.status(204).json(removed);
+};
+
 export {
     getAllUserController,
     createUserController,
     getUserController,
     updateUserController,
+    removeUserController,
 };

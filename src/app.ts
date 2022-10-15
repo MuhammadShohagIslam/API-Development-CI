@@ -5,6 +5,7 @@ import {
     createUserController,
     getAllUserController,
     getUserController,
+    removeUserController,
     updateUserController,
 } from "./controllers/user-controller";
 
@@ -19,5 +20,6 @@ app.post("/users", createUserController);
 app.get("/users", getAllUserController);
 app.get("/users/user/:id", getUserController);
 app.put("/users/user/:id", updateUserController);
+app.delete("/users/user/:id", removeUserController);
 
 export default app;

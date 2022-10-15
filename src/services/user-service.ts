@@ -29,9 +29,15 @@ const updateUserService = async (id: string, updateData: UserAttrs) => {
     return updatedUser;
 };
 
+const removeUserService = async (id: string) => {
+    const removeUser = await User.deleteOne({ _id: id });
+    return removeUser;
+};
+
 export {
     getAllUserService,
     createUserService,
     getUserService,
     updateUserService,
+    removeUserService,
 };

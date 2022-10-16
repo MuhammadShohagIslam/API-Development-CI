@@ -10,10 +10,12 @@ export class RequestValidationError extends CustomError {
     }
 
     serializeError() {
+        const { message, path } = this.error.details[0];
+
         return [
             {
-                message: this.error.details[0].message.split('"').join(""),
-                path: this.error.details[0].path[0],
+                message: message.split('"').join(""),
+                path: path[0],
                 statusCode: this.statusCode,
             },
         ];

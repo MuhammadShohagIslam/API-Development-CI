@@ -6,7 +6,7 @@ export const processCorrelationId = (
     next: NextFunction
 ) => {
     let correlationId = req.headers["x-correlation-id"];
-    console.log(correlationId);
+
     if (!correlationId) {
         correlationId = `${Date.now()}`;
         req.headers["x-correlation-id"] = correlationId;

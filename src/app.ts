@@ -1,6 +1,6 @@
 import { json, urlencoded } from "body-parser";
 import express from "express";
-import { successLogger, errorLogger } from "./config/Logger";
+import { successLogger, errorLogger } from "./config/logger";
 
 import configureRoutes from "./controllers";
 import errorHandler from "./middlewares/error-handler";
@@ -8,11 +8,10 @@ import { processCorrelationId } from "./middlewares/process-correlation-id";
 
 const app = express();
 
-// third-party middleware
 app.use([json(), urlencoded({ extended: false })]);
 
-app.use(processCorrelationId);
 app.use(successLogger);
+app.use(processCorrelationId);
 
 configureRoutes(app);
 

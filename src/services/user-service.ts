@@ -1,6 +1,7 @@
+import { NotFoundError, BadRequestError } from "../errors";
 import models from "../models";
 import { UserAttrs } from "../models/user";
-import { BadRequestError } from "./../errors/bad-request-error";
+
 
 const User = models.User;
 
@@ -38,10 +39,9 @@ const removeUserService = async (id: string) => {
 
     if (user) {
         const removeUser = await User.deleteOne({ _id: id });
-        console.log(removeUser);
         return removeUser;
     }
-    throw new BadRequestError("User Not Found");
+    throw new NotFoundError("User Not Found");
 };
 
 export {

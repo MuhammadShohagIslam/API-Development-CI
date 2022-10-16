@@ -1,5 +1,6 @@
 import { Schema, model, Document, Model } from "mongoose";
 
+
 // An interface describe the properties that required to create a new User
 export interface UserAttrs {
     username: String;

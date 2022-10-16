@@ -1,20 +1,21 @@
 import { CustomError } from "./custom-error";
 
-export class NotFoundError extends CustomError{
-   statusCode = 404;
+export class NotFoundError extends CustomError {
+    statusCode = 404;
 
-    constructor(message:string){
+    constructor(message: string) {
         super(message);
-        this.message = message
-        Object.setPrototypeOf(this, NotFoundError.prototype)
+        this.message = message;
+        Object.setPrototypeOf(this, NotFoundError.prototype);
     }
 
-    serializeError(){
+    serializeError(correlationId: string | string[]) {
         return [
             {
-                message:this.message,
-                statusCode:this.statusCode
-            }
-        ]
+                correlationId: correlationId,
+                message: this.message,
+                statusCode: this.statusCode,
+            },
+        ];
     }
 }

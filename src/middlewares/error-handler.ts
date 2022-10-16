@@ -7,17 +7,23 @@ const errorHandler = (
     res: Response,
     next: NextFunction
 ) => {
+    const correlationId = req.headers["x-correlation-id"];
+
     if (err instanceof CustomError) {
         return res
             .status(err.statusCode)
-            .send({ errors: err.serializeError() });
+            .send({ errors: err.serializeError(correlationId!) });
     }
 
-    return res
-        .status(500)
-        .send({
-            errors: [{ message: "Something Went Wrong!", statusCode: 500 }],
-        });
+    return res.status(500).send({
+        errors: [
+            {
+                correlationId: correlationId,
+                message: "Something Went Wrong!",
+                statusCode: 500,
+            },
+        ],
+    });
 };
 
 export default errorHandler;

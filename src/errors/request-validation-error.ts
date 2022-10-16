@@ -9,11 +9,12 @@ export class RequestValidationError extends CustomError {
         Object.setPrototypeOf(this, RequestValidationError.prototype);
     }
 
-    serializeError() {
+    serializeError(correlationId: string | string[]) {
         const { message, path } = this.error.details[0];
 
         return [
             {
+                correlationId: correlationId,
                 message: message.split('"').join(""),
                 path: path[0],
                 statusCode: this.statusCode,

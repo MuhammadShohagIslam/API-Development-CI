@@ -118,3 +118,8 @@
   level: '\x1B[32minfo\x1B[39m',
   message: '{"correlationId":"fsgjgshfsfsfusfsgfhsgfs","body":{"username":"newcarrer","email":"new@gmail.com"}}'
 }
+{
+  meta: {},
+  level: '\x1B[32minfo\x1B[39m',
+  message: '{"correlationId":"fsgjgshfsfsfusfsgfhsgfs","body":{"username":"newcarrer","email":"new@gmail.com"}}'
+}

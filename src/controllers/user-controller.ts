@@ -69,7 +69,7 @@ const removeUserHandler = async (
 router.post("/", validateRequest(userSchema), createUserHandler);
 router.get("/", getAllUserHandler);
 router.get("/:id", getUserHandler);
-router.patch("/:id", updateUserHandler);
+router.patch("/:id", validateRequest(userSchema), updateUserHandler);
 router.delete("/:id", removeUserHandler);
 
 const configureUserRoutes = (app: Application) => {

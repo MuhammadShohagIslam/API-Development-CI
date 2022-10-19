@@ -7,7 +7,6 @@ import configureRoutes from "./controllers";
 import errorHandler from "./middlewares/error-handler";
 import { processCorrelationId } from "./middlewares/process-correlation-id";
 
-console.log(process.env.ENVIRONMENT != "TEST")
 
 const app = express();
 
@@ -17,7 +16,6 @@ app.use(processCorrelationId);
 connectWithMongoDB();
 
 if(process.env.ENVIRONMENT != "TEST"){
-    console.log("test", "ENVIRONMENT");
     app.use(successLogger);
 }
 
@@ -27,6 +25,7 @@ configureRoutes(app);
 if(process.env.ENVIRONMENT != "TEST"){
     app.use(errorLogger);
 }
+
 app.use(errorHandler);
 
 export default app;

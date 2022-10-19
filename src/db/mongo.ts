@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, {ConnectOptions} from "mongoose";
 
 //connection mongoDB
 const url = "mongodb://127.0.0.1:27017/blogAPI";
-const options = {};
+const options = { useUnifiedTopology: true } as ConnectOptions;
 function connectWithMongoDB() {
     mongoose.connect(url, options, function (error) {
         if (error) {
@@ -13,4 +13,4 @@ function connectWithMongoDB() {
     });
 }
 
-export default connectWithMongoDB
+export default connectWithMongoDB;

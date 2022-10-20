@@ -1,4 +1,4 @@
-import mongoose, {ConnectOptions} from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 
 //connection mongoDB
 const url = "mongodb://127.0.0.1:27017/blogAPI";
@@ -13,4 +13,4 @@ function connectWithMongoDB() {
     });
 }
 
-export default connectWithMongoDB;
+export { connectWithMongoDB, url };

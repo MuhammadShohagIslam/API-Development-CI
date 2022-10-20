@@ -60,7 +60,7 @@ const removeUserHandler = async (
     try {
         const { id } = req.params;
         const removed = await removeUserService(id);
-        res.status(204).json(removed);
+        res.status(200).json(removed);
     } catch (error) {
         next(error);
     }

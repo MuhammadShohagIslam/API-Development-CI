@@ -2,7 +2,6 @@ import { NotFoundError, BadRequestError } from "../errors";
 import models from "../models";
 import { UserAttrs } from "../models/user";
 
-
 const User = models.User;
 
 const createUserService = async (requestBody: UserAttrs) => {
@@ -22,7 +21,7 @@ const getAllUserService = async () => {
 const getUserService = async (id: string) => {
     const user = await User.findById({ _id: id }).exec();
     if (!user) {
-        throw new BadRequestError("User Not Found");
+        throw new NotFoundError(`User Not Found By The Id Of ${id}`);
     }
     return user;
 };

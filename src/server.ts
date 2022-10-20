@@ -6,7 +6,7 @@ app.listen(3000, () => {
     connectWithMongoDB();
 
     if (process.env.ENVIRONMENT != "TEST") {
-        app.use(successLogger);
+        app.use(successLogger());
     }
 
     console.log("Listening on port 3000");

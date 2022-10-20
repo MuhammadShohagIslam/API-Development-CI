@@ -48,5 +48,4 @@ export const removeUserService = async (id: string) => {
     }else{
         throw new NotFoundError(`User Not Found By The ${id}`);
     }
-        
 };

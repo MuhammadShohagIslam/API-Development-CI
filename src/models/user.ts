@@ -1,16 +1,22 @@
 import { Schema, model, Document, Model } from "mongoose";
 
-
 // An interface describe the properties that required to create a new User
 export interface UserAttrs {
+    _id?: string | number;
     username: String;
     email: String;
 }
 
 // an interface describe the properties that User Document has
 interface UserDoc extends Document {
+    _id: string | number;
     username: String;
     email: String;
+    _doc:{
+        _id: string | number;
+        username: String;
+        email: String; 
+    }
 }
 
 // an interface describe the properties that a User Model has

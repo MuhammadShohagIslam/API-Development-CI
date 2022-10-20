@@ -14,3 +14,19 @@ describe("getAllUserHandler Test Suit", () => {
     })
 });
 
+describe("createUserHandler Test Suit", () => {
+    test("status code should be return 201", async () => {
+        const user = {
+            username: "abcdfgsgfsjh",
+            email:"abcd@gmail.com"
+        }
+        const response = await request(app).post("/users").send(user);
+        console.log(response.body);
+        expect(response.status).toBe(201);
+        const newUserId = response.body._id
+        const responseSingleUser = await request(app).get(`/users/${newUserId}`);
+        expect(responseSingleUser.statusCode).toBe(200);
+
+    });
+});
+

@@ -1,11 +1,13 @@
+import express,{Request, Response} from "express";
 import { json, urlencoded } from "body-parser";
-import express from "express";
+import swaggerUi from "swagger-ui-express";
 import "dotenv/config";
-import { errorLogger } from "./config/logger";
+import { successLogger } from "./config/logger";
 import configureRoutes from "./controllers";
 import errorHandler from "./middlewares/error-handler";
 import { processCorrelationId } from "./middlewares/process-correlation-id";
-import { url } from "./db/mongo";
+
+// import SwaggerDocument from './swagger.json';
 
 const app = express();
 
@@ -13,12 +15,20 @@ app.use([json(), urlencoded({ extended: false })]);
 
 app.use(processCorrelationId);
 
-configureRoutes(app);
 
 if (process.env.ENVIRONMENT != "TEST") {
-    app.use(errorLogger(url));
+    app.use(successLogger());
 }
+
+configureRoutes(app);
+
+
 
 app.use(errorHandler);
 
+app.use("/api-docs", swaggerUi.serve, async (_req: Request, res: Response) => {
+    return res.send(
+        swaggerUi.generateHTML(await import("./swagger.json"))
+    );
+});
 export default app;

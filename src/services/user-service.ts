@@ -1,6 +1,6 @@
 import { NotFoundError, BadRequestError } from "../errors";
-import models from "../models";
-import { UserAttrs } from "../models/user";
+import models from "../models/data-models";
+import { UserAttrs } from "../models/data-models/user";
 
 const User = models.User;
 

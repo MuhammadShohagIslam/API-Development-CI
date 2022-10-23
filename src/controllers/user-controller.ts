@@ -1,6 +1,6 @@
-import express, { Request, Response, Application, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { validateRequest } from "../middlewares/request-validate";
-import { userSchema } from "../models/validation";
+import { userSchema } from "../models/request-validation-models";
 import {
     createUserService,
     getAllUserService,
@@ -72,8 +72,4 @@ router.get("/:id", getUserHandler);
 router.patch("/:id", validateRequest(userSchema), updateUserHandler);
 router.delete("/:id", removeUserHandler);
 
-const configureUserRoutes = (app: Application) => {
-    app.use("/users", router);
-};
-
-export default configureUserRoutes;
+export { router as userRouters };

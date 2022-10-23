@@ -1,37 +1,34 @@
 {
     "swagger": "2.0",
     "info": {
+        "description": "Placeholder Like Blog API Application",
         "version": "1.0.0",
-        "title": "Parcelkoi Application API",
-        "description": "Parcelkoi Application API",
+        "title": "Blog API Application",
         "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
+            "name": "MIT"
         }
     },
     "host": "localhost:3000",
     "basePath": "/api",
     "tags": [
         {
-            "name": "Users",
-            "description": "API for users in the system"
+            "name": "Post",
+            "description": "API for Posts in the Blog Application"
+        },
+        {
+            "name": "Comment",
+            "description": "API for Comment in the Blog Application"
+        },
+        {
+            "name": "User",
+            "description": "Operations about User"
         }
     ],
-    "schemes": [
-        "http"
-    ],
-    "consumes": [
-        "application/json"
-    ],
-    "produces": [
-        "application/json"
-    ],
+    "schemes": ["http"],
     "paths": {
         "/users": {
             "post": {
-                "tags": [
-                    "Users"
-                ],
+                "tags": ["User"],
                 "summary": "Create new user in system",
                 "description": "Create new user in system",
                 "parameters": [
@@ -39,69 +36,36 @@
                         "name": "user",
                         "in": "body",
                         "description": "User that we want to create",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "New user is created",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get all users in system",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/Users"
                         }
                     }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "New user is created"
+                    }
                 }
             },
-            "put": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Updates the user",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "User payload for update",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/UserViewModel"
-                        }
-                    }
-                ],
+            "get": {
+                "tags": ["User"],
+                "summary": "Get all users in system",
+                "description": "Get all users in system",
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "OK"
                     }
                 }
             }
         },
         "/users/{id}": {
             "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get user by id",
+                "tags": ["User"],
+                "summary": "Find user by Id",
+                "description": "Find user by Id",
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "id",
@@ -113,77 +77,84 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success",
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "User Not Found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["User"],
+                "summary": "Updated user by Id",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "id",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id that need to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Updated user object",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/UserViewModel"
+                            "$ref": "#/definitions/Users"
                         }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User Update Successfully"
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Delete user by id",
+                "tags": ["User"],
+                "summary": "Delete user by Id",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "id",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Id of the user",
+                        "description": "Id that need to be Delete",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "User Delete Successfully"
+                    },
+                    "404": {
+                        "description": "User Not Found"
                     }
                 }
             }
         }
     },
     "definitions": {
-        "User": {
-            "required": [
-                "username"
-            ],
+        "Users": {
+            "type": "object",
             "properties": {
                 "username": {
                     "type": "string",
-                    "pattern": "^[a-zA-Z0-9]*$",
                     "minLength": 3,
                     "maxLength": 30
+                },
+                "email": {
+                    "type": "string"
                 }
             }
-        },
-        "UserViewModel": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "examples": [
-                        "5f8abd12a57f4e103cb4d302"
-                    ]
-                },
-                "username": {
-                    "type": "string",
-                    "examples": [
-                        "u001"
-                    ]
-                },
-                "createdAt": {
-                    "type": "string",
-                    "examples": [
-                        "2020-10-17T09:44:50.543Z"
-                    ]
-                }
-            }
-        },
-        "Users": {
-            "type": "array",
-            "$ref": "#/definitions/UserViewModel"
         }
     }
 }

@@ -1,5 +1,4 @@
-import { userRouters } from "./user-controller";
+import { userRouter } from "./user-controller";
+import { postRouter } from "./post-controller";
 
-export {
-   userRouters 
-}
+export { postRouter, userRouter };

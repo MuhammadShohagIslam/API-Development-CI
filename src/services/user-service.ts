@@ -1,8 +1,7 @@
 import { NotFoundError } from "../errors";
-import models from "../models/data-models";
+import { User } from "../models/data-models";
 import { UserAttrs } from "../models/data-models/user-model";
 
-const User = models.User;
 
 const createUserService = async (requestBody: UserAttrs) => {
     const { username, email } = requestBody;

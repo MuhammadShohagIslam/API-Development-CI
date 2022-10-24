@@ -33,7 +33,18 @@ const getAllPostHandler = async (
         next(error);
     }
 };
-const getPostHandler = (req: Request, res: Response) => {};
+const getPostHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const post = await getPostService(req.params.postId);
+        res.status(200).json(post);
+    } catch (error) {
+        next(error);
+    }
+};
 const updatePostHandler = (req: Request, res: Response) => {};
 const removePostHandler = (req: Request, res: Response) => {};
 

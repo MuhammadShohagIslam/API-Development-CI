@@ -60,8 +60,17 @@ const updatePostHandler = async (
         next(error);
     }
 };
-const removePostHandler = (req: Request, res: Response) => {
-
+const removePostHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const removedPost = await removePostService(req.params.postId);
+        res.status(200).json(removedPost);
+    } catch (error) {
+        next(error);
+    }
 };
 
 router.post("/", createPostHandler);

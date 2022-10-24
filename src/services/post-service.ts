@@ -3,7 +3,7 @@ import { Post } from "../models/data-models";
 import { NotFoundError } from "../errors";
 
 const createPostService = async (post: PostAttrs) => {
-    const newPost = await Post.createNewPost(post);
+    const newPost = Post.createNewPost(post);
     const saveNewPost = await newPost.save();
     return saveNewPost;
 };

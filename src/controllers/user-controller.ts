@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { validateRequest } from "../middlewares/request-validate";
+import validateRequest  from "../middlewares/request-validate";
 import { userSchema } from "../models/request-validation-models";
 import {
     createUserService,

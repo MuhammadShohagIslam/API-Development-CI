@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import {
     createPostService,
     getAllPostService,
@@ -9,8 +9,30 @@ import {
 
 const router = express.Router();
 
-const createPostHandler = (req: Request, res: Response) => {};
-const getAllPostHandler = (req: Request, res: Response) => {};
+const createPostHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const newPost = await createPostService(req.body);
+        res.status(200).json(newPost);
+    } catch (error) {
+        next(error);
+    }
+};
+const getAllPostHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const posts = await getAllPostService();
+        res.status(200).json(posts);
+    } catch (error) {
+        next(error);
+    }
+};
 const getPostHandler = (req: Request, res: Response) => {};
 const updatePostHandler = (req: Request, res: Response) => {};
 const removePostHandler = (req: Request, res: Response) => {};

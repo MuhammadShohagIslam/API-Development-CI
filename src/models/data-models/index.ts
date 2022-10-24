@@ -1,7 +1,4 @@
 import User from "./user-model";
+import Post from "./post-model";
 
-const models = {
-    User,
-};
-
-export default models;
+export { Post, User };

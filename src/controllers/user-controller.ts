@@ -72,4 +72,4 @@ router.get("/:id", getUserHandler);
 router.patch("/:id", validateRequest(userSchema), updateUserHandler);
 router.delete("/:id", removeUserHandler);
 
-export { router as userRouters };
+export { router as userRouter };

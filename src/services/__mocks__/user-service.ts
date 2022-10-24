@@ -1,8 +1,6 @@
 import { NotFoundError } from "../../errors";
-import { UserAttrs } from "../../models/user";
-import models from "./../../models";
-
-const User = models.User;
+import { UserAttrs } from "../../models/data-models/user-model";
+import { User } from "./../../models/data-models";
 
 const users: UserAttrs[] = [
     {
@@ -32,7 +30,7 @@ export const createUserService = async (requestBody: UserAttrs) => {
 export const updateUserService = async (id: string, updateData: UserAttrs) => {
     let getUserById = await getUserService(id);
 
-    if(getUserById){
+    if (getUserById) {
         getUserById.email = updateData.email;
         getUserById.username = updateData.username;
     }
@@ -40,12 +38,12 @@ export const updateUserService = async (id: string, updateData: UserAttrs) => {
 };
 
 export const removeUserService = async (id: string) => {
-    let getUserIndexById = users.findIndex(user=> user._id == id);
-    if(getUserIndexById == 0){
+    let getUserIndexById = users.findIndex((user) => user._id == id);
+    if (getUserIndexById == 0) {
         const deletedUserId = users[getUserIndexById]._id;
         users.splice(getUserIndexById, 1);
         return deletedUserId;
-    }else{
+    } else {
         throw new NotFoundError(`User Not Found By The ${id}`);
     }
 };

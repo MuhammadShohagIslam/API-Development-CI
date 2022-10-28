@@ -9,7 +9,7 @@ const createPostService = async (post: PostAttrs) => {
 };
 
 const getAllPostService = async () => {
-    const posts = await Post.find({}).exec();
+    const posts = await Post.find({}).populate("user").exec();
     return posts;
 };
 

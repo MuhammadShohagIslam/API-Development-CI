@@ -3,10 +3,11 @@ import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import "dotenv/config";
-import { successLogger } from "./config/logger";
+import { successLogger, errorLogger } from "./config/logger";
 import rootRouters from "./routers";
 import errorHandler from "./middlewares/error-handler";
 import { processCorrelationId } from "./middlewares/process-correlation-id";
+
 
 const app = express();
 
@@ -19,6 +20,10 @@ if (process.env.ENVIRONMENT != "TEST") {
 }
 
 rootRouters(app);
+
+if (process.env.ENVIRONMENT != "TEST") {
+    app.use(errorLogger());
+}
 
 app.use(errorHandler);
 

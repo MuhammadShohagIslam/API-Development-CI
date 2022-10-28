@@ -1,4 +1,4 @@
-import { Schema, model, Types, Model, Document } from "mongoose";
+import { Schema, model, Types, Model, Document,PopulatedDoc } from "mongoose";
 
 // an interface describe the properties that required to create a new Post
 export interface PostAttrs {
@@ -11,7 +11,7 @@ export interface PostAttrs {
 interface PostDoc extends Document {
     title: string;
     body: string;
-    user: Types.ObjectId;
+    user: PopulatedDoc<Document<Types.ObjectId>>;
 }
 
 // an interface describe the properties that a Post Model has
@@ -24,7 +24,7 @@ const postSchema = new Schema(
         title: {
             type: String,
             max: 200,
-            min: 15,
+            min: 10,
             required: true,
         },
         body: {
@@ -34,10 +34,20 @@ const postSchema = new Schema(
         },
         user: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Users",
         },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        toJSON: {
+            transform(doc, ret) {
+                ret.id = ret._id;
+                delete ret._id;
+                delete ret.updatedAt;
+                delete ret.__v;
+            },
+        },
+    }
 );
 
 postSchema.statics.createNewPost = (post: PostAttrs) => {

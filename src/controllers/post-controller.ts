@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
+import validateRequest  from "../middlewares/request-validate";
+import { postSchema } from "../models/request-validation-models";
 import {
     createPostService,
     getAllPostService,
@@ -73,10 +75,10 @@ const removePostHandler = async (
     }
 };
 
-router.post("/", createPostHandler);
+router.post("/", validateRequest(postSchema) ,createPostHandler);
 router.get("/", getAllPostHandler);
 router.get("/:postId", getPostHandler);
-router.patch("/:postId", updatePostHandler);
+router.patch("/:postId",validateRequest(postSchema), updatePostHandler);
 router.delete("/:postId", removePostHandler);
 
 export { router as postRouter };

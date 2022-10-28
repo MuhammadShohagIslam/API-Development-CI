@@ -1,3 +1,4 @@
 import userSchema from "./user";
+import postSchema from "./post-request";
 
-export { userSchema };
+export { postSchema, userSchema };

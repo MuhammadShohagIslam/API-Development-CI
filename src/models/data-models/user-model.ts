@@ -12,11 +12,11 @@ interface UserDoc extends Document {
     _id: string | number;
     username: String;
     email: String;
-    _doc:{
+    _doc: {
         _id: string | number;
         username: String;
-        email: String; 
-    }
+        email: String;
+    };
 }
 
 // an interface describe the properties that a User Model has
@@ -24,16 +24,28 @@ interface UserModel extends Model<UserDoc> {
     build(attrs: UserAttrs): UserDoc;
 }
 
-const userSchema = new Schema({
-    username: {
-        type: String,
-        required: true,
+const userSchema = new Schema(
+    {
+        username: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
     },
-    email: {
-        type: String,
-        required: true,
-    },
-});
+    {
+        timestamps: true,
+        toJSON: {
+            transform(doc, ret) {
+                ret.id = ret._id;
+                delete ret._id;
+                delete ret.__v;
+            },
+        },
+    }
+);
 
 userSchema.statics.build = (attrs: UserAttrs) => {
     return new User(attrs);

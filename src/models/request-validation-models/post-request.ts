@@ -1,8 +1,12 @@
 import Joi from "joi";
 
 const postSchema = Joi.object({
-    title: Joi.string().min(15).max(200).required(),
+    title: Joi.string().min(10).max(200).required(),
     body: Joi.string().required(),
+    user: Joi.string()
+        .regex(/^[0-9a-fA-F]{24}$/)
+        .message("User Id Is Not Match")
+        .required(),
 });
 
 export default postSchema;

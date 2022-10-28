@@ -1,4 +1,4 @@
-import { Schema, model, Types, Model, Document,PopulatedDoc } from "mongoose";
+import { Schema, model, Types, Model, Document, PopulatedDoc } from "mongoose";
 
 // an interface describe the properties that required to create a new Post
 export interface PostAttrs {
@@ -21,6 +21,9 @@ interface PostModel extends Model<PostDoc> {
 
 const postSchema = new Schema(
     {
+        postId: {
+            type: String,
+        },
         title: {
             type: String,
             max: 200,
@@ -42,7 +45,9 @@ const postSchema = new Schema(
         toJSON: {
             transform(doc, ret) {
                 ret.id = ret._id;
+                ret.published = ret.createdAt;
                 delete ret._id;
+                delete ret.createdAt;
                 delete ret.updatedAt;
                 delete ret.__v;
             },

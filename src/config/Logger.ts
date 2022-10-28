@@ -4,8 +4,6 @@ import winston from "winston";
 // import DailyRotateFile from "winston-daily-rotate-file";
 import "winston-mongodb";
 
-
-    
 // success logger
 const successLogger = () =>
     expressWinston.logger({
@@ -42,9 +40,9 @@ const errorLogger = () =>
             // }),
             new winston.transports.MongoDB({
                 level: "error",
-                db:process.env.MONGODB_URI!,
+                db: process.env.MONGO_URL!,
                 metaKey: "meta",
-            })
+            }),
         ],
         format: winston.format.combine(
             winston.format.colorize(),

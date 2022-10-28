@@ -1,10 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
-import validateRequest  from "../middlewares/request-validate";
+import validateRequest from "../middlewares/request-validate";
 import { postSchema } from "../models/request-validation-models";
 import {
     createPostService,
     getAllPostService,
-    getPostService,
+    getPostByUserIdService,
+    getPostByPostIdService,
     updatePostService,
     removePostService,
 } from "../services/post-service";
@@ -35,13 +36,25 @@ const getAllPostHandler = async (
         next(error);
     }
 };
-const getPostHandler = async (
+const getPostByUserIdHandler = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        const post = await getPostService(req.params.postId);
+        const postsByUser = await getPostByUserIdService(req.params.userId);
+        res.status(200).json(postsByUser);
+    } catch (error) {
+        next(error);
+    }
+};
+const getPostByPostIdHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const post = await getPostByPostIdService(req.params.postId);
         res.status(200).json(post);
     } catch (error) {
         next(error);
@@ -75,10 +88,11 @@ const removePostHandler = async (
     }
 };
 
-router.post("/", validateRequest(postSchema) ,createPostHandler);
+router.post("/", validateRequest(postSchema), createPostHandler);
 router.get("/", getAllPostHandler);
-router.get("/:postId", getPostHandler);
-router.patch("/:postId",validateRequest(postSchema), updatePostHandler);
+router.get("/user/:userId", getPostByUserIdHandler);
+router.get("/:postId", getPostByPostIdHandler);
+router.patch("/:postId", validateRequest(postSchema), updatePostHandler);
 router.delete("/:postId", removePostHandler);
 
 export { router as postRouter };

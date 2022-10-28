@@ -1,7 +1,7 @@
 import mongoose, { ConnectOptions } from "mongoose";
 
 //connection mongoDB
-const url = process.env.MONGODB_URI;
+const url = process.env.MONGO_URL;
 
 const options = { useUnifiedTopology: true } as ConnectOptions;
 function connectWithMongoDB() {

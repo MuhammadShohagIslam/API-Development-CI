@@ -9,4 +9,8 @@ const postSchema = Joi.object({
         .required(),
 });
 
-export default postSchema;
+const postUpdateSchema = Joi.object({
+    title: Joi.string().min(10).max(200).required(),
+    body: Joi.string().required(),
+});
+export { postSchema, postUpdateSchema };

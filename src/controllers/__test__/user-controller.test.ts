@@ -3,7 +3,7 @@ import app from "../../app";
 
 jest.mock("../../services/user-service");
 
-describe.skip("Get All User Test Suit", () => {
+describe("Get All User Test Suit", () => {
     test("status code should be return 200", async () => {
         const response = await request(app).get("/api/users");
         expect(response.status).toBe(200);
@@ -14,7 +14,7 @@ describe.skip("Get All User Test Suit", () => {
     });
 });
 
-describe.skip("Create New User Test Suit", () => {
+describe("Create New User Test Suit", () => {
     test("status code should be return 201", async () => {
         const user = {
             username: "abcdefgh",
@@ -30,7 +30,7 @@ describe.skip("Create New User Test Suit", () => {
     });
 });
 
-describe.skip("Update A Existing User Test Suit", () => {
+describe("Update A Existing User Test Suit", () => {
     test("status code should return 201", async () => {
         const updateId = "1";
         const updateUser = {
@@ -44,12 +44,14 @@ describe.skip("Update A Existing User Test Suit", () => {
     });
     test("should return updated user", async () => {
         const updateId = "1";
-        const responseUpdateUser = await request(app).get(`/api/users/${updateId}`);
+        const responseUpdateUser = await request(app).get(
+            `/api/users/${updateId}`
+        );
         expect(responseUpdateUser.body).toBeDefined();
     });
 });
 
-describe.skip("Delete User Test Suit", () => {
+describe("Delete User Test Suit", () => {
     test("status code should return 200", async () => {
         const removeId = "1";
         const response = await request(app).delete(`/api/users/${removeId}`);

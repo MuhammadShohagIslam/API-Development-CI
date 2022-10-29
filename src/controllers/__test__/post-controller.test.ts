@@ -12,6 +12,22 @@ const createPost = async () => {
     return await request(app).post("/api/posts").send(newPost);
 };
 
+describe("Create New Post Suit", () => {
+    test("return 200 if new post is created", async () => {
+        const response = await createPost();
+        expect(response.status).toBe(200);
+    });
+    test("return 404 if request data is not valid", async () => {
+        const userId = new mongoose.Types.ObjectId().toHexString();
+        const newPost = {
+            title: "",
+            body: "This is a awesome test case for testing",
+            user: userId,
+        };
+        await request(app).post("/api/posts").send(newPost).expect(400);
+    });
+});
+
 describe("Get All Post Test Suit", () => {
     test("can fetch list of posts", async () => {
         await createPost();
@@ -69,5 +85,67 @@ describe("Get Post By User Id Test Suit", () => {
             .send();
 
         expect(response.status).toBe(404);
+    });
+});
+
+describe("Update Post Test Suit", () => {
+    test("return 200 if post is updated", async () => {
+        const createNewPost = await createPost();
+        const updatePostId = createNewPost.body.id;
+
+        const updatedPost = {
+            title: "Updated Post Good Test",
+            body: "Updated Post Good Test for Body",
+        };
+
+        await request(app)
+            .patch(`/api/posts/${updatePostId}`)
+            .send(updatedPost)
+            .expect(200);
+    });
+    test("return 404 if post has not found", async () => {
+        const postId = new mongoose.Types.ObjectId().toHexString();
+        const updatedPost = {
+            title: "Updated Post Good Test",
+            body: "Updated Post Good Test for Body",
+        };
+
+        await request(app)
+            .patch(`/api/posts/${postId}`)
+            .send(updatedPost)
+            .expect(404);
+    });
+    test("return error if invalid post data provided", async () => {
+        const post = await createPost();
+        const updatePostId = post.body.id;
+
+        const updatedPost = {
+            title: "",
+            body: "Updated Post Good Test for Body",
+        };
+
+        try {
+            await request(app)
+                .patch(`/api/posts/${updatePostId}`)
+                .send(updatedPost);
+        } catch (error) {
+            expect(error).toThrow();
+        }
+    });
+});
+
+describe("Delete The Post Suit", () => {
+    test("return 404 if the post is not found", async () => {
+        const deletedId = new mongoose.Types.ObjectId().toHexString();
+        await request(app).delete(`/api/posts/${deletedId}`).expect(404);
+    });
+
+    test("return 200 if the post is deleted successfully", async () => {
+        await createPost();
+        await createPost();
+
+        const deletedId = await (await createPost()).body.id;
+
+        await request(app).delete(`/api/posts/${deletedId}`).expect(200);
     });
 });

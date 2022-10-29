@@ -117,3 +117,19 @@ describe("Update Post Test Suit", () => {
         }
     });
 });
+
+describe("Delete The Post Suit", () => {
+    test("return 404 if the post is not found", async () => {
+        const deletedId = new mongoose.Types.ObjectId().toHexString();
+        await request(app).delete(`/api/posts/${deletedId}`).expect(404);
+    });
+
+    test("return 200 if the post is deleted successfully", async () => {
+        await createPost();
+        await createPost();
+
+        const deletedId = await (await createPost()).body.id;
+
+        await request(app).delete(`/api/posts/${deletedId}`).expect(200);
+    });
+});

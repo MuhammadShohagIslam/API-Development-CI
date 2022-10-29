@@ -12,7 +12,23 @@ const createPost = async () => {
     return await request(app).post("/api/posts").send(newPost);
 };
 
-describe.skip("Get All Post Test Suit", () => {
+describe("Create New Post Suit", () => {
+    test("return 200 if new post is created", async () => {
+        const response = await createPost();
+        expect(response.status).toBe(200);
+    });
+    test("return 404 if request data is not valid", async () => {
+        const userId = new mongoose.Types.ObjectId().toHexString();
+        const newPost = {
+            title: "",
+            body: "This is a awesome test case for testing",
+            user: userId,
+        };
+        await request(app).post("/api/posts").send(newPost).expect(400);
+    });
+});
+
+describe("Get All Post Test Suit", () => {
     test("can fetch list of posts", async () => {
         await createPost();
         await createPost();
@@ -26,7 +42,7 @@ describe.skip("Get All Post Test Suit", () => {
     });
 });
 
-describe.skip("Get Post By Post Id Test Suit", () => {
+describe("Get Post By Post Id Test Suit", () => {
     test("return status 200 and length 1 if post has", async () => {
         await createPost();
 
@@ -52,7 +68,7 @@ describe.skip("Get Post By Post Id Test Suit", () => {
     });
 });
 
-describe.skip("Get Post By User Id Test Suit", () => {
+describe("Get Post By User Id Test Suit", () => {
     test("return status 200 if post has", async () => {
         const postsResponse = await createPost();
 
@@ -73,7 +89,7 @@ describe.skip("Get Post By User Id Test Suit", () => {
 });
 
 describe("Update Post Test Suit", () => {
-    test.skip("return 200 if post is updated", async () => {
+    test("return 200 if post is updated", async () => {
         const createNewPost = await createPost();
         const updatePostId = createNewPost.body.id;
 
@@ -87,7 +103,7 @@ describe("Update Post Test Suit", () => {
             .send(updatedPost)
             .expect(200);
     });
-    test.skip("return 404 if post has not found", async () => {
+    test("return 404 if post has not found", async () => {
         const postId = new mongoose.Types.ObjectId().toHexString();
         const updatedPost = {
             title: "Updated Post Good Test",

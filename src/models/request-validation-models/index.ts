@@ -1,4 +1,4 @@
 import userSchema from "./user";
-import postSchema from "./post-request";
+import { postSchema, postUpdateSchema } from "./post-request";
 
-export { postSchema, userSchema };
+export { postSchema, userSchema, postUpdateSchema };

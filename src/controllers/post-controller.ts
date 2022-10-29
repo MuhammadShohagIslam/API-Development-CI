@@ -1,6 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 import validateRequest from "../middlewares/request-validate";
-import { postSchema } from "../models/request-validation-models";
+import {
+    postSchema,
+    postUpdateSchema,
+} from "../models/request-validation-models";
 import {
     createPostService,
     getAllPostService,
@@ -92,7 +95,7 @@ router.post("/", validateRequest(postSchema), createPostHandler);
 router.get("/", getAllPostHandler);
 router.get("/user/:userId", getPostByUserIdHandler);
 router.get("/:postId", getPostByPostIdHandler);
-router.patch("/:postId", validateRequest(postSchema), updatePostHandler);
+router.patch("/:postId", validateRequest(postUpdateSchema), updatePostHandler);
 router.delete("/:postId", removePostHandler);
 
 export { router as postRouter };

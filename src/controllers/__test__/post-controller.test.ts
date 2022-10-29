@@ -12,7 +12,7 @@ const createPost = async () => {
     return await request(app).post("/api/posts").send(newPost);
 };
 
-describe("Get All Post Test Suit", () => {
+describe.skip("Get All Post Test Suit", () => {
     test("can fetch list of posts", async () => {
         await createPost();
         await createPost();
@@ -26,7 +26,7 @@ describe("Get All Post Test Suit", () => {
     });
 });
 
-describe("Get Post By Post Id Test Suit", () => {
+describe.skip("Get Post By Post Id Test Suit", () => {
     test("return status 200 and length 1 if post has", async () => {
         await createPost();
 
@@ -52,7 +52,7 @@ describe("Get Post By Post Id Test Suit", () => {
     });
 });
 
-describe("Get Post By User Id Test Suit", () => {
+describe.skip("Get Post By User Id Test Suit", () => {
     test("return status 200 if post has", async () => {
         const postsResponse = await createPost();
 
@@ -69,5 +69,51 @@ describe("Get Post By User Id Test Suit", () => {
             .send();
 
         expect(response.status).toBe(404);
+    });
+});
+
+describe("Update Post Test Suit", () => {
+    test.skip("return 200 if post is updated", async () => {
+        const createNewPost = await createPost();
+        const updatePostId = createNewPost.body.id;
+
+        const updatedPost = {
+            title: "Updated Post Good Test",
+            body: "Updated Post Good Test for Body",
+        };
+
+        await request(app)
+            .patch(`/api/posts/${updatePostId}`)
+            .send(updatedPost)
+            .expect(200);
+    });
+    test.skip("return 404 if post has not found", async () => {
+        const postId = new mongoose.Types.ObjectId().toHexString();
+        const updatedPost = {
+            title: "Updated Post Good Test",
+            body: "Updated Post Good Test for Body",
+        };
+
+        await request(app)
+            .patch(`/api/posts/${postId}`)
+            .send(updatedPost)
+            .expect(404);
+    });
+    test("return error if invalid post data provided", async () => {
+        const post = await createPost();
+        const updatePostId = post.body.id;
+
+        const updatedPost = {
+            title: "",
+            body: "Updated Post Good Test for Body",
+        };
+
+        try {
+            await request(app)
+                .patch(`/api/posts/${updatePostId}`)
+                .send(updatedPost);
+        } catch (error) {
+            expect(error).toThrow();
+        }
     });
 });

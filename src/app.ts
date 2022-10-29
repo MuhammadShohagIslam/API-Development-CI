@@ -3,7 +3,7 @@ import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import "dotenv/config";
-import { successLogger, errorLogger } from "./config/logger";
+import { successLogger, errorLogger } from "./config/logger.config";
 import rootRouters from "./routers";
 import errorHandler from "./middlewares/error-handler";
 import { processCorrelationId } from "./middlewares/process-correlation-id";

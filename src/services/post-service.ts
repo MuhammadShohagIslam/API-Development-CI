@@ -23,9 +23,9 @@ const getPostByPostIdService = async (postId: string) => {
 };
 
 const getPostByUserIdService = async (userId: string) => {
-    const postsByUser = await Post.find({ user: userId }).populate("user").exec();
+    const postsByUser = await Post.find({ user: userId }).exec();
 
-    if (!postsByUser) {
+    if (postsByUser.length === 0) {
         throw new NotFoundError(`Post Not Found By The postId Of ${userId}`);
     }
     return postsByUser;

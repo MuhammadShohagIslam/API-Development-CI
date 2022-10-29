@@ -4,7 +4,7 @@ import { User } from "./../../models/data-models";
 
 const users: UserAttrs[] = [
     {
-        _id: "1",
+        id: "1",
         username: "abcdefgh",
         email: "abcd@gmail.com",
     },
@@ -15,7 +15,7 @@ export const getAllUserService = async () => {
 };
 
 export const getUserService = async (id: string) => {
-    const user = users.find((x) => x._id == id);
+    const user = users.find((x) => x.id == id);
     return user;
 };
 
@@ -38,9 +38,9 @@ export const updateUserService = async (id: string, updateData: UserAttrs) => {
 };
 
 export const removeUserService = async (id: string) => {
-    let getUserIndexById = users.findIndex((user) => user._id == id);
+    let getUserIndexById = users.findIndex((user) => user.id == id);
     if (getUserIndexById == 0) {
-        const deletedUserId = users[getUserIndexById]._id;
+        const deletedUserId = users[getUserIndexById].id;
         users.splice(getUserIndexById, 1);
         return deletedUserId;
     } else {

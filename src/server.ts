@@ -1,6 +1,5 @@
 import app from "./app";
-import { errorLogger } from "./config/logger";
-import { connectWithMongoDB } from "./db/mongo";
+import { connectWithMongoDB } from "./config/mongo.db.config";
 
 app.listen(3000, () => {
     connectWithMongoDB();

@@ -93,7 +93,7 @@ const removePostHandler = async (
 
 router.post("/", validateRequest(postSchema), createPostHandler);
 router.get("/", getAllPostHandler);
-router.get("/user/:userId", getPostByUserIdHandler);
+router.get("/users/:userId", getPostByUserIdHandler);
 router.get("/:postId", getPostByPostIdHandler);
 router.patch("/:postId", validateRequest(postUpdateSchema), updatePostHandler);
 router.delete("/:postId", removePostHandler);

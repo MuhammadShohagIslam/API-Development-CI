@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import validateRequest from "../middlewares/request-validate";
 import {
-    postSchema,
-    postUpdateSchema,
+    commentSchema,
+    commentUpdateSchema,
 } from "../models/request-validation-models";
 import {
     createCommentService,
@@ -11,7 +11,7 @@ import {
     getCommentByPostIdService,
     updateCommentService,
     removeCommentService,
-} from "../services/post-service";
+} from "../services/comment-service";
 
 const router = express.Router();
 
@@ -21,8 +21,8 @@ const createCommentHandler = async (
     next: NextFunction
 ) => {
     try {
-        const newPost = await createCommentService(req.body);
-        res.status(200).json(newPost);
+        const newComment = await createCommentService(req.body);
+        res.status(200).json(newComment);
     } catch (error) {
         next(error);
     }
@@ -33,8 +33,8 @@ const getAllCommentHandler = async (
     next: NextFunction
 ) => {
     try {
-        const posts = await getAllCommentService();
-        res.status(200).json(posts);
+        const comments = await getAllCommentService();
+        res.status(200).json(comments);
     } catch (error) {
         next(error);
     }
@@ -45,8 +45,8 @@ const getCommentByIdHandler = async (
     next: NextFunction
 ) => {
     try {
-        const postsByUser = await getCommentByIdService(req.params.userId);
-        res.status(200).json(postsByUser);
+        const commentById = await getCommentByIdService(req.params.commentId);
+        res.status(200).json(commentById);
     } catch (error) {
         next(error);
     }
@@ -57,8 +57,8 @@ const getCommentByPostIdHandler = async (
     next: NextFunction
 ) => {
     try {
-        const post = await getCommentByPostIdService(req.params.postId);
-        res.status(200).json(post);
+        const commentByPost = await getCommentByPostIdService(req.params.commentId);
+        res.status(200).json(commentByPost);
     } catch (error) {
         next(error);
     }
@@ -69,11 +69,11 @@ const updateCommentHandler = async (
     next: NextFunction
 ) => {
     try {
-        const { postId } = req.params;
-        const updatePostData = req.body;
+        const { commentId } = req.params;
+        const updateCommentData = req.body;
 
-        const post = await updateCommentService(updatePostData, postId);
-        res.status(200).json(post);
+        const comment = await updateCommentService(updateCommentData, commentId);
+        res.status(200).json(comment);
     } catch (error) {
         next(error);
     }
@@ -84,18 +84,18 @@ const removeCommentHandler = async (
     next: NextFunction
 ) => {
     try {
-        const removedPost = await removeCommentService(req.params.postId);
-        res.status(200).json(removedPost);
+        const removedComment = await removeCommentService(req.params.commentId);
+        res.status(200).json(removedComment);
     } catch (error) {
         next(error);
     }
 };
 
-router.post("/", validateRequest(postSchema), createCommentHandler);
+router.post("/", validateRequest(commentSchema), createCommentHandler);
 router.get("/", getAllCommentHandler);
 router.get("/posts/:commentId", getCommentByPostIdHandler);
 router.get("/:commentId", getCommentByIdHandler);
-router.patch("/:commentId", validateRequest(postUpdateSchema), updateCommentHandler);
+router.patch("/:commentId", validateRequest(commentUpdateSchema), updateCommentHandler);
 router.delete("/:commentId", removeCommentHandler);
 
-export { router as postRouter };
+export { router as commentRouter };

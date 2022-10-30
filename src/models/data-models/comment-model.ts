@@ -2,7 +2,7 @@ import { Schema, model, Document, Model, Types } from "mongoose";
 import isEmail from "validator/lib/isEmail";
 
 // an interface describe the properties that required to create new comment
-interface CommentAttrs {
+export interface CommentAttrs {
     name: String;
     email: String;
     body: String;

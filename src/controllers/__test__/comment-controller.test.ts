@@ -137,3 +137,21 @@ describe("Update Comment Test Suit", () => {
         }
     });
 });
+
+describe("Delete The Comment Suit", () => {
+    test("return 404 if the comment is not found", async () => {
+        const deletedId = new mongoose.Types.ObjectId().toHexString();
+        await request(app).delete(`/api/comments/${deletedId}`).expect(404);
+    });
+
+    test("return 200 if the comments is deleted successfully", async () => {
+        await createComment("test@gmail.com");
+        await createComment("test1@gmail.com");
+
+        const deletedId = await (
+            await createComment("test2@gmail.com")
+        ).body.id;
+
+        await request(app).delete(`/api/comments/${deletedId}`).expect(200);
+    });
+});

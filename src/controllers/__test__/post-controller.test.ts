@@ -73,7 +73,7 @@ describe("Get Post By User Id Test Suit", () => {
         const postsResponse = await createPost();
 
         const response = await request(app)
-            .get(`/api/posts/user/${postsResponse.body.user}`)
+            .get(`/api/posts/users/${postsResponse.body.user}`)
             .send();
         expect(response.status).toBe(200);
     });
@@ -81,7 +81,7 @@ describe("Get Post By User Id Test Suit", () => {
         const userId = new mongoose.Types.ObjectId().toHexString();
 
         const response = await request(app)
-            .get(`/api/posts/user/${userId}`)
+            .get(`/api/posts/users/${userId}`)
             .send();
 
         expect(response.status).toBe(404);

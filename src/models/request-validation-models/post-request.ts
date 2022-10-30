@@ -10,7 +10,7 @@ const postSchema = Joi.object({
 });
 
 const postUpdateSchema = Joi.object({
-    title: Joi.string().min(10).max(200).required(),
-    body: Joi.string().required(),
+    title: Joi.string().min(10).max(200),
+    body: Joi.string(),
 });
 export { postSchema, postUpdateSchema };

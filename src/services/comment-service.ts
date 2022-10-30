@@ -1,8 +1,14 @@
 import { CommentAttrs } from "../models/data-models/comment-model";
 import { Comment } from "../models/data-models";
-import { NotFoundError } from "../errors";
+import { BadRequestError, NotFoundError } from "../errors";
 
 const createCommentService = async (comment: CommentAttrs) => {
+    const isAlreadyEmailExist = await Comment.findOne({
+        email: comment.email,
+    }).exec();
+    if (isAlreadyEmailExist) {
+        throw new BadRequestError("Email Is Already Exist");
+    }
     const newComment = Comment.createNewComment(comment);
     const saveNewComment = await newComment.save();
     return saveNewComment;

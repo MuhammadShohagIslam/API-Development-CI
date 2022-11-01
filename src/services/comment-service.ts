@@ -34,7 +34,7 @@ const getCommentByIdService = async (commentId: string) => {
 const getCommentByPostIdService = async (postId: string) => {
     const commentByPost = await Comment.find({ postId: postId }).exec();
 
-    if (commentByPost.length === 0) {
+    if (commentByPost?.length === 0) {
         throw new NotFoundError(
             `Comment Not Found By The commentId Of ${postId}`
         );

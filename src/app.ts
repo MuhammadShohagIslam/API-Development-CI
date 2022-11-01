@@ -7,6 +7,7 @@ import { successLogger, errorLogger } from "./config/logger.config";
 import rootRouters from "./routers";
 import errorHandler from "./middlewares/error-handler";
 import { processCorrelationId } from "./middlewares/process-correlation-id";
+import "./services/cache";
 
 
 const app = express();

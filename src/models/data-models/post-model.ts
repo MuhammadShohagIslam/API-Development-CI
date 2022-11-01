@@ -4,7 +4,7 @@ import { Schema, model, Types, Model, Document, PopulatedDoc } from "mongoose";
 export interface PostAttrs {
     title: string;
     body: string;
-    user: Types.ObjectId;
+    user: string;
 }
 
 // an interface describe the properties that Post Document has

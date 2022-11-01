@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model, Types } from "mongoose";
+import { Schema, model, Document, Model, Types, PopulatedDoc } from "mongoose";
 import isEmail from "validator/lib/isEmail";
 
 // an interface describe the properties that required to create new comment
@@ -13,6 +13,7 @@ interface CommentDoc extends Document {
     name: string;
     email: string;
     body: string;
+    post:PopulatedDoc<Document<Types.ObjectId>>,
     createdAt: Date;
 }
 

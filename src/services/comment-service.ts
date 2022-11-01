@@ -52,6 +52,14 @@ const updateCommentService = async (
         );
     }
 
+    const isAlreadyEmailExist = await Comment.findOne({
+        email: updatedCommentData.email,
+    }).exec();
+
+    if (updatedCommentData.email === isAlreadyEmailExist?.email) {
+        throw new BadRequestError("Email is Already Exist");
+    }
+
     const updatedComment = await Comment.findOneAndUpdate(
         { _id: commentId },
         updatedCommentData,

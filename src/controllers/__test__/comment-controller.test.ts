@@ -8,12 +8,12 @@ const createComment = async (email: string) => {
         name: "comment test",
         email: email,
         body: "Good Jest Test",
-        post: postId,
+        postId: postId,
     };
     return await request(app).post("/api/comments").send(newComment);
 };
 
-describe.skip("Create New Comment Suit", () => {
+describe("Create New Comment Suit", () => {
     test("return 200 if new comment is created", async () => {
         const response = await createComment("test@gmail.com");
         expect(response.status).toBe(200);
@@ -23,13 +23,13 @@ describe.skip("Create New Comment Suit", () => {
         const newComment = {
             name: "",
             email: "test@gmail.com",
-            post: postId,
+            postId: postId,
         };
         await request(app).post("/api/comments").send(newComment).expect(400);
     });
 });
 
-describe.skip("Get All Comment Test Suit", () => {
+describe("Get All Comment Test Suit", () => {
     test("can fetch list of comments", async () => {
         await createComment("test1@gmail.com");
         await createComment("test2@gmail.com");
@@ -43,7 +43,7 @@ describe.skip("Get All Comment Test Suit", () => {
     });
 });
 
-describe.skip("Get Comment By Comment Id Test Suit", () => {
+describe("Get Comment By Comment Id Test Suit", () => {
     test("return status 200 and if comment has", async () => {
         await createComment("test1@gmail.com");
 
@@ -72,27 +72,7 @@ describe.skip("Get Comment By Comment Id Test Suit", () => {
     });
 });
 
-describe.skip("Get Comment By Post Id Test Suit", () => {
-    test("return status 200 if comment has", async () => {
-        const comment = await createComment("test1@gmail.com");
-
-        const response = await request(app)
-            .get(`/api/comments/posts/${comment.body.post}`)
-            .send();
-        expect(response.status).toBe(200);
-    });
-    test("return status 404 if comment not found by post ", async () => {
-        const postId = new mongoose.Types.ObjectId().toHexString();
-
-        const response = await request(app)
-            .get(`/api/comments/posts/${postId}`)
-            .send();
-
-        expect(response.status).toBe(404);
-    });
-});
-
-describe.skip("Update Comment Test Suit", () => {
+describe("Update Comment Test Suit", () => {
     test("return 200 if comment is updated", async () => {
         const createNewComment = await createComment("test1@gmail.com");
         const updateCommentId = createNewComment.body.id;
@@ -138,7 +118,7 @@ describe.skip("Update Comment Test Suit", () => {
     });
 });
 
-describe.skip("Delete The Comment Suit", () => {
+describe("Delete The Comment Suit", () => {
     test("return 404 if the comment is not found", async () => {
         const deletedId = new mongoose.Types.ObjectId().toHexString();
         await request(app).delete(`/api/comments/${deletedId}`).expect(404);

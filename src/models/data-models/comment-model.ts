@@ -3,9 +3,10 @@ import isEmail from "validator/lib/isEmail";
 
 // an interface describe the properties that required to create new comment
 export interface CommentAttrs {
-    name: String;
-    email: String;
-    body: String;
+    name: string;
+    email: string;
+    body: string;
+    postId:string;
 }
 
 // an interface describe the properties that comment document has
@@ -13,8 +14,8 @@ interface CommentDoc extends Document {
     name: string;
     email: string;
     body: string;
-    post:PopulatedDoc<Document<Types.ObjectId>>,
-    createdAt: Date;
+    postId:PopulatedDoc<Document<Types.ObjectId>>,
+    commentedAt: Date;
 }
 
 // an interface describe the properties that comment model has
@@ -41,16 +42,17 @@ const commentSchema = new Schema(
             type: String,
             required: true,
         },
-        post: {
+        postId: {
             type: Schema.Types.ObjectId,
             ref: "Posts",
         },
     },
     {
-        timestamps: true,
         toJSON: {
             transform(doc, ret) {
                 ret.id = ret._id;
+                ret.commentedAt =ret.createdAt;
+                delete ret.createdAt;
                 delete ret._id;
                 delete ret.updatedAt;
                 delete ret.__v;

@@ -1,9 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
+// import { redis } from "../config/redis.db.config";
 import validateRequest from "../middlewares/request-validate";
 import {
     postSchema,
     postUpdateSchema,
 } from "../models/request-validation-models";
+import { getCommentByPostIdService } from "../services/comment-service";
 import {
     createPostService,
     getAllPostService,
@@ -63,6 +65,30 @@ const getPostByPostIdHandler = async (
         next(error);
     }
 };
+const getCommentByPostIdHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+
+        // const cachedValue = await redis.get(req.params.postId);
+        // if (cachedValue) {
+        //     console.log("Coming From Redis", cachedValue);
+        //     return res.status(200).json(JSON.parse(cachedValue));
+        // }
+
+        // console.log("Coming From Server", cachedValue);
+
+        const commentByPost = await getCommentByPostIdService(
+            req.params.postId
+        );
+        // await redis.set(req.params.postId, JSON.stringify(commentByPost));
+        res.status(200).json(commentByPost);
+    } catch (error) {
+        next(error);
+    }
+};
 const updatePostHandler = async (
     req: Request,
     res: Response,
@@ -94,6 +120,7 @@ const removePostHandler = async (
 router.post("/", validateRequest(postSchema), createPostHandler);
 router.get("/", getAllPostHandler);
 router.get("/users/:userId", getPostByUserIdHandler);
+router.get("/:postId/comments", getCommentByPostIdHandler);
 router.get("/:postId", getPostByPostIdHandler);
 router.patch("/:postId", validateRequest(postUpdateSchema), updatePostHandler);
 router.delete("/:postId", removePostHandler);

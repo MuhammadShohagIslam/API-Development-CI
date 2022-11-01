@@ -5,6 +5,7 @@ import { BadRequestError, NotFoundError } from "../errors";
 const createCommentService = async (comment: CommentAttrs) => {
     const isAlreadyEmailExist = await Comment.findOne({
         email: comment.email,
+        postId: comment.postId,
     }).exec();
     if (isAlreadyEmailExist) {
         throw new BadRequestError("Email Is Already Exist");
@@ -31,7 +32,7 @@ const getCommentByIdService = async (commentId: string) => {
 };
 
 const getCommentByPostIdService = async (postId: string) => {
-    const commentByPost = await Comment.find({ post: postId }).exec();
+    const commentByPost = await Comment.find({ postId: postId }).exec();
 
     if (commentByPost.length === 0) {
         throw new NotFoundError(
@@ -52,11 +53,15 @@ const updateCommentService = async (
         );
     }
 
-    const isAlreadyEmailExist = await Comment.findOne({
+    const isAlreadyUserExist = await Comment.findOne({
         email: updatedCommentData.email,
     }).exec();
 
-    if (updatedCommentData.email === isAlreadyEmailExist?.email) {
+    if (
+        updatedCommentData.email !== undefined &&
+        isAlreadyUserExist?.email !== undefined &&
+        isAlreadyUserExist?.email === updatedCommentData.email
+    ) {
         throw new BadRequestError("Email is Already Exist");
     }
 

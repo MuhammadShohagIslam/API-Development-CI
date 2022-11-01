@@ -5,7 +5,7 @@ const commentData = {
     name: "Awesome Model Test",
     email: "test@gmail.com",
     body: "Awesome Test Body Comment",
-    post: new mongoose.Types.ObjectId().toHexString(),
+    postId: new mongoose.Types.ObjectId().toHexString(),
 };
 
 describe("Comment Model Test Suit", () => {
@@ -15,8 +15,8 @@ describe("Comment Model Test Suit", () => {
 
         expect(savedComment._id).toBeDefined();
         expect(savedComment.email).toBe(commentData.email);
-        expect(JSON.stringify(savedComment.post)).toBe(
-            JSON.stringify(commentData.post)
+        expect(JSON.stringify(savedComment.postId)).toBe(
+            JSON.stringify(commentData.postId)
         );
     });
 });

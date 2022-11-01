@@ -8,7 +8,7 @@ const createComment = async (email: string) => {
         name: "comment test",
         email: email,
         body: "Good Jest Test",
-        post: postId,
+        postId: postId,
     };
     return await request(app).post("/api/comments").send(newComment);
 };
@@ -23,7 +23,7 @@ describe("Create New Comment Suit", () => {
         const newComment = {
             name: "",
             email: "test@gmail.com",
-            post: postId,
+            postId: postId,
         };
         await request(app).post("/api/comments").send(newComment).expect(400);
     });
@@ -66,26 +66,6 @@ describe("Get Comment By Comment Id Test Suit", () => {
 
         const response = await request(app)
             .get(`/api/comments/${commentId}`)
-            .send();
-
-        expect(response.status).toBe(404);
-    });
-});
-
-describe("Get Comment By Post Id Test Suit", () => {
-    test("return status 200 if comment has", async () => {
-        const comment = await createComment("test1@gmail.com");
-
-        const response = await request(app)
-            .get(`/api/comments/posts/${comment.body.post}`)
-            .send();
-        expect(response.status).toBe(200);
-    });
-    test("return status 404 if comment not found by post ", async () => {
-        const postId = new mongoose.Types.ObjectId().toHexString();
-
-        const response = await request(app)
-            .get(`/api/comments/posts/${postId}`)
             .send();
 
         expect(response.status).toBe(404);

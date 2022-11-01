@@ -8,11 +8,9 @@ import {
     createCommentService,
     getAllCommentService,
     getCommentByIdService,
-    getCommentByPostIdService,
     updateCommentService,
     removeCommentService,
 } from "../services/comment-service";
-
 
 const router = express.Router();
 
@@ -52,18 +50,7 @@ const getCommentByIdHandler = async (
         next(error);
     }
 };
-const getCommentByPostIdHandler = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
-        const commentByPost = await getCommentByPostIdService(req.params.commentId);
-        res.status(200).json(commentByPost);
-    } catch (error) {
-        next(error);
-    }
-};
+
 const updateCommentHandler = async (
     req: Request,
     res: Response,
@@ -73,7 +60,10 @@ const updateCommentHandler = async (
         const { commentId } = req.params;
         const updateCommentData = req.body;
 
-        const comment = await updateCommentService(updateCommentData, commentId);
+        const comment = await updateCommentService(
+            updateCommentData,
+            commentId
+        );
         res.status(200).json(comment);
     } catch (error) {
         next(error);
@@ -94,9 +84,12 @@ const removeCommentHandler = async (
 
 router.post("/", validateRequest(commentSchema), createCommentHandler);
 router.get("/", getAllCommentHandler);
-router.get("/posts/:commentId", getCommentByPostIdHandler);
 router.get("/:commentId", getCommentByIdHandler);
-router.patch("/:commentId", validateRequest(commentUpdateSchema), updateCommentHandler);
+router.patch(
+    "/:commentId",
+    validateRequest(commentUpdateSchema),
+    updateCommentHandler
+);
 router.delete("/:commentId", removeCommentHandler);
 
 export { router as commentRouter };

@@ -1,17 +1,15 @@
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 
-//connection mongoDB
-const url = process.env.MONGO_URL;
-
-const options = { useUnifiedTopology: true } as ConnectOptions;
-function connectWithMongoDB() {
-    mongoose.connect(url!, options, function (error) {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log("MongoDB is connected successfully!");
-        }
-    });
+async function connectWithMongoDB() {
+    if (!process.env.MONGO_URL) {
+        throw new Error("MONGO_URL must be defined");
+    }
+    try {
+        await mongoose.connect(process.env.MONGO_URL, {});
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-export { connectWithMongoDB, url };
+export { connectWithMongoDB };

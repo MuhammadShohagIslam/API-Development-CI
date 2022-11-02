@@ -1,20 +1,23 @@
-import { createClient } from "redis";
+import {
+    createClient,
+    RedisClientType,
+    RedisModules,
+    RedisFunctions,
+    RedisScripts,
+} from "redis";
 
-let client: any;
-
-async function connectWithRedis() {
-    const redisClient = createClient({
-        url: process.env.REDIS_URL,
-        password: process.env.REDIS_PW,
-    });
-
+let client: RedisClientType<RedisModules, RedisFunctions, RedisScripts>;
+const connectRedis = async () => {
     try {
+        const redisClient = createClient({
+            url: process.env.REDIS_URL,
+            password: process.env.REDIS_PW,
+        });
         await redisClient.connect();
         client = redisClient;
-        console.log("Redis connected");
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-export { connectWithRedis, client };
+export { connectRedis, client };

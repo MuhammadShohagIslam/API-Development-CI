@@ -1,4 +1,11 @@
-import { Schema, model, Types, Model, Document, PopulatedDoc } from "mongoose";
+import {
+    Schema,
+    model,
+    Types,
+    Model,
+    Document,
+    PopulatedDoc
+} from "mongoose";
 
 // an interface describe the properties that required to create a new Post
 export interface PostAttrs {
@@ -55,9 +62,12 @@ const postSchema = new Schema(
     }
 );
 
+
+
 postSchema.statics.createNewPost = (post: PostAttrs) => {
     return new Post(post);
 };
+
 
 const Post = model<PostDoc, PostModel>("Posts", postSchema);
 

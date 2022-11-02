@@ -2,8 +2,8 @@ import app from "./app";
 import { connectWithMongoDB } from "./config/mongo.db.config";
 import { connectRedis } from "./config/redis.db.config";
 
-const start =  () => {
-    connectRedis();
+const start = async () => {
+    await connectRedis();
     connectWithMongoDB();
 
 

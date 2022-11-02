@@ -1,6 +1,7 @@
 import { PostAttrs } from "../models/data-models/post-model";
 import { Post } from "../models/data-models";
 import { NotFoundError } from "../errors";
+import { cachingData } from "./cache";
 
 const createPostService = async (post: PostAttrs) => {
     const newPost = Post.createNewPost(post);
@@ -22,9 +23,11 @@ const getPostByPostIdService = async (postId: string) => {
 };
 
 const getPostByUserIdService = async (userId: string) => {
-    const postsByUser = await Post.find({ user: userId })
-        .byName({ key: userId })
-        .exec();
+
+    const postsByUser = await cachingData(userId, async () => {
+        const data = await Post.find({ user: userId }).exec();
+        return data;
+    });
 
     if (postsByUser.length === 0) {
         throw new NotFoundError(`Post Not Found By The postId Of ${userId}`);

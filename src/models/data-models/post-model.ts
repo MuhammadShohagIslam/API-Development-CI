@@ -1,4 +1,12 @@
-import { Schema, model, Types, Model, Document, PopulatedDoc } from "mongoose";
+import {
+    Schema,
+    model,
+    Types,
+    Model,
+    Document,
+    PopulatedDoc,
+    Query,
+} from "mongoose";
 
 // an interface describe the properties that required to create a new Post
 export interface PostAttrs {
@@ -13,9 +21,17 @@ interface PostDoc extends Document {
     body: string;
     user: PopulatedDoc<Document<Types.ObjectId>>;
 }
+type Option = {
+    key: string;
+};
 
+interface ProjectQueryHelpers extends Query<any, any>{
+    hashKey:any;
+    cachedKey:any;
+    byName(options: Option): Query<any, any>;
+}
 // an interface describe the properties that a Post Model has
-interface PostModel extends Model<PostDoc> {
+interface PostModel extends Model<PostDoc, ProjectQueryHelpers> {
     createNewPost(post: PostAttrs): PostDoc;
 }
 
@@ -54,6 +70,26 @@ const postSchema = new Schema(
         },
     }
 );
+
+(postSchema as Schema<any> & { query: any }).query.byName = function (
+    options = <Option>{}
+): Query<any,any> & ProjectQueryHelpers {
+    this.useCache = true;
+    this.hashKey = JSON.stringify(options.key || "");
+    class Good extends Query<any, any>{
+        hashKey:any;
+        useCache:any;
+        constructor(useCache:boolean, options:Option){
+            super();
+            this.useCache = useCache;
+            this.hashKey = JSON.stringify(options.key || "");
+            Object.setPrototypeOf(this, Good.prototype);
+        }
+    }
+    const a = new Good(true, options);
+    this.cachedHashKey = a;
+    return this;
+};
 
 postSchema.statics.createNewPost = (post: PostAttrs) => {
     return new Post(post);

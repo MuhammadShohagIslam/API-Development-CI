@@ -58,6 +58,7 @@ const getPostByPostIdHandler = async (
     next: NextFunction
 ) => {
     try {
+        
         const post = await getPostByPostIdService(req.params.postId);
         res.status(200).json(post);
     } catch (error) {

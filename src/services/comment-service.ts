@@ -1,14 +1,20 @@
 import { CommentAttrs } from "../models/data-models/comment-model";
-import { Comment } from "../models/data-models";
+import { Comment, Post } from "../models/data-models";
 import { BadRequestError, NotFoundError } from "../errors";
+import { cachingData } from "./cache";
 
 const createCommentService = async (comment: CommentAttrs) => {
     const isAlreadyEmailExist = await Comment.findOne({
         email: comment.email,
-        postId: comment.postId,
+    }).exec();
+    const isAlreadyPostExist = await Post.findOne({
+        _id: comment.postId,
     }).exec();
     if (isAlreadyEmailExist) {
         throw new BadRequestError("Email Is Already Exist");
+    }
+    if (!isAlreadyPostExist) {
+        throw new BadRequestError("Post Not Exist");
     }
     const newComment = Comment.createNewComment(comment);
     const saveNewComment = await newComment.save();
@@ -32,11 +38,20 @@ const getCommentByIdService = async (commentId: string) => {
 };
 
 const getCommentByPostIdService = async (postId: string) => {
-    const commentByPost = await Comment.find({ postId: postId }).exec();
+    const commentByPost = await cachingData(
+        `posts/${postId}/comments`,
+        Comment.collection.name.slice(0, -1),
+        postId,
+        async () => {
+            const data = await Comment.find({ postId: postId }).exec();
+            console.log(data, "data");
+            return data;
+        }
+    );
 
-    if (commentByPost?.length === 0) {
+    if (commentByPost.length === 0) {
         throw new NotFoundError(
-            `Comment Not Found By The commentId Of ${postId}`
+            `Comment Not Found By The postId Of ${postId}`
         );
     }
     return commentByPost;

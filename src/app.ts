@@ -3,7 +3,7 @@ import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import "dotenv/config";
-// import { successLogger, errorLogger } from "./config/logger.config";
+import { successLogger, errorLogger } from "./config/logger.config";
 import errorHandler from "./middlewares/error-handler";
 import rootRouters from "./routers";
 import { processCorrelationId } from "./middlewares/process-correlation-id";
@@ -16,15 +16,15 @@ app.use([json(), urlencoded({ extended: false }), cors()]);
 
 app.use(processCorrelationId);
 
-// if (process.env.ENVIRONMENT != "TEST") {
-//     app.use(successLogger());
-// }
+if (process.env.ENVIRONMENT != "TEST") {
+    app.use(successLogger());
+}
 
 rootRouters(app);
 
-// if (process.env.ENVIRONMENT != "TEST") {
-//     app.use(errorLogger());
-// }
+if (process.env.ENVIRONMENT != "TEST") {
+    app.use(errorLogger());
+}
 
 app.use(errorHandler);
 

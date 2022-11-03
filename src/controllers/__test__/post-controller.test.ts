@@ -1,6 +1,30 @@
 import mongoose from "mongoose";
 import request from "supertest";
 import app from "../../app";
+import Redis from "ioredis";
+import { RedisMemoryServer } from "redis-memory-server";
+
+let redisClient: Redis;
+let redisServer: RedisMemoryServer;
+
+beforeAll(async () => {
+    redisServer = new RedisMemoryServer();
+    const host = await redisServer.getHost();
+    const port = await redisServer.getPort();
+    redisClient = new Redis({
+        host,
+        port,
+    });
+});
+
+afterAll(async () => {
+    if (redisClient) {
+        redisClient.disconnect();
+    }
+    if (redisServer) {
+        await redisServer.stop();
+    }
+});
 
 const createPost = async () => {
     const userId = new mongoose.Types.ObjectId().toHexString();
@@ -11,6 +35,17 @@ const createPost = async () => {
     };
     return await request(app).post("/api/posts").send(newPost);
 };
+
+const createComment = async (email: string, postId:string) => {
+    const newComment = {
+        name: "comment test",
+        email: email,
+        body: "Good Jest Test",
+        postId: postId,
+    };
+    return await request(app).post("/api/comments").send(newComment);
+};
+
 
 describe("Create New Post Suit", () => {
     test("return 200 if new post is created", async () => {
@@ -84,26 +119,53 @@ describe("Get Post By User Id Test Suit", () => {
             .get(`/api/posts/users/${userId}`)
             .send();
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
     });
 });
 
 describe("Get Comment By Post Id Test Suit", () => {
     test("return status 200 if comment has", async () => {
-        const newComment = {
-            name: "comment test",
-            email: "test1@gmail.com",
-            body: "Good Jest Test",
-            postId: new mongoose.Types.ObjectId().toHexString(),
-        };
-        const comment = await request(app)
-            .post("/api/comments")
-            .send(newComment);
+        const createPostResponse = await createPost();
+        const comment = await createComment("test1@gmail.com",createPostResponse.body.id);
 
-        const response = await request(app)
-            .get(`/api/posts/${comment.body.postId}/comments`)
-            .send();
-        expect(response.status).toBe(200);
+        const cachingData = async (
+            key: string,
+            callback: () => Promise<any>
+        ) => {
+            try {
+                const cachedData = await redisClient.get(
+                    `posts/${comment.body.postId}/comments`
+                );
+
+                if (cachedData !== null) {
+                    expect(JSON.parse(cachedData)).toBeDefined();
+                }
+
+                const freshData = await callback();
+
+                await redisClient.set(
+                    `posts/${comment.body.postId}/comments`,
+                    JSON.stringify(freshData),
+                    "EX",
+                    200
+                );
+
+                return freshData;
+            } catch (error) {
+
+            }
+        };
+
+        const data = await cachingData(
+            `posts/${comment.body.postId}/comments`,
+            async () => {
+                const response = await request(app)
+                    .get(`/api/posts/${comment.body.postId}/comments`)
+                    .send();
+                return response;
+            }
+        );
+        expect(data).toBeDefined();
     });
     test("return status 404 if comment not found by post ", async () => {
         const postId = new mongoose.Types.ObjectId().toHexString();
@@ -112,7 +174,7 @@ describe("Get Comment By Post Id Test Suit", () => {
             .get(`/api/posts/${postId}/comments`)
             .send();
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
     });
 });
 

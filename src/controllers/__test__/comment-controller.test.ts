@@ -2,8 +2,17 @@ import mongoose from "mongoose";
 import request from "supertest";
 import app from "../../app";
 
-const createComment = async (email: string) => {
-    const postId = new mongoose.Types.ObjectId().toHexString();
+const createPost = async () => {
+    const userId = new mongoose.Types.ObjectId().toHexString();
+    const newPost = {
+        title: "This is a awesome test case",
+        body: "This is a awesome test case for testing",
+        user: userId,
+    };
+    return await request(app).post("/api/posts").send(newPost);
+};
+
+const createComment = async (email: string, postId:string) => {
     const newComment = {
         name: "comment test",
         email: email,
@@ -13,9 +22,13 @@ const createComment = async (email: string) => {
     return await request(app).post("/api/comments").send(newComment);
 };
 
+
+
 describe("Create New Comment Suit", () => {
     test("return 200 if new comment is created", async () => {
-        const response = await createComment("test@gmail.com");
+        const createPostResponse = await createPost();
+        const response = await createComment("test@gmail.com",createPostResponse.body.id);
+
         expect(response.status).toBe(200);
     });
     test("return 404 if request data is not valid", async () => {
@@ -31,9 +44,10 @@ describe("Create New Comment Suit", () => {
 
 describe("Get All Comment Test Suit", () => {
     test("can fetch list of comments", async () => {
-        await createComment("test1@gmail.com");
-        await createComment("test2@gmail.com");
-        await createComment("test3@gmail.com");
+        const createPostResponse = await createPost();
+        await createComment("test1@gmail.com",createPostResponse.body.id);
+        await createComment("test2@gmail.com",createPostResponse.body.id);
+        await createComment("test3@gmail.com",createPostResponse.body.id);
 
         const response = await request(app)
             .get("/api/comments")
@@ -45,10 +59,11 @@ describe("Get All Comment Test Suit", () => {
 
 describe("Get Comment By Comment Id Test Suit", () => {
     test("return status 200 and if comment has", async () => {
-        await createComment("test1@gmail.com");
-
+        const createPostResponse = await createPost();
+        await createComment("test1@gmail.com",createPostResponse.body.id);
+       
         const commentId = await (
-            await createComment("test2@gmail.com")
+            await createComment("test2@gmail.com",createPostResponse.body.id)
         ).body.id;
 
         const response = await request(app)
@@ -74,7 +89,8 @@ describe("Get Comment By Comment Id Test Suit", () => {
 
 describe("Update Comment Test Suit", () => {
     test("return 200 if comment is updated", async () => {
-        const createNewComment = await createComment("test1@gmail.com");
+        const createPostResponse = await createPost();
+        const createNewComment =  await createComment("test1@gmail.com",createPostResponse.body.id);
         const updateCommentId = createNewComment.body.id;
 
         const updatedComment = {
@@ -100,7 +116,8 @@ describe("Update Comment Test Suit", () => {
             .expect(404);
     });
     test("return error if invalid comment data provided", async () => {
-        const post = await createComment("test1@gmail.com");
+        const createPostResponse = await createPost();
+        const post = await createComment("test1@gmail.com",createPostResponse.body.id);;
         const updatePostId = post.body.id;
 
         const updatedComment = {
@@ -125,11 +142,11 @@ describe("Delete The Comment Suit", () => {
     });
 
     test("return 200 if the comments is deleted successfully", async () => {
-        await createComment("test@gmail.com");
-        await createComment("test1@gmail.com");
+        const createPostResponse = await createPost();
+        await createComment("test1@gmail.com",createPostResponse.body.id);
 
         const deletedId = await (
-            await createComment("test2@gmail.com")
+            await createComment("test2@gmail.com",createPostResponse.body.id)
         ).body.id;
 
         await request(app).delete(`/api/comments/${deletedId}`).expect(200);

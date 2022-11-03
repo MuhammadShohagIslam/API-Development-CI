@@ -23,15 +23,16 @@ const getPostByPostIdService = async (postId: string) => {
 };
 
 const getPostByUserIdService = async (userId: string) => {
+    const postsByUser = await cachingData(
+        `posts/users?userId=${userId}`,
+        Post.collection.name,
+        userId,
+        async () => {
+            const data = await Post.find({ user: userId }).exec();
+            return data;
+        }
+    );
 
-    const postsByUser = await cachingData(userId, async () => {
-        const data = await Post.find({ user: userId }).exec();
-        return data;
-    });
-
-    if (postsByUser.length === 0) {
-        throw new NotFoundError(`Post Not Found By The postId Of ${userId}`);
-    }
     return postsByUser;
 };
 

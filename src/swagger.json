@@ -26,6 +26,121 @@
     ],
     "schemes": ["http"],
     "paths": {
+        "/posts":{
+            "post": {
+                "tags": ["Post"],
+                "summary": "Create new Post in system",
+                "description": "Create new Post in system",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "body",
+                        "description": "Post that we want to create",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Posts"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "New Post is created"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Post"],
+                "summary": "Get all Posts in system",
+                "description": "Get all Posts in system",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}":{
+            "get": {
+                "tags": ["post"],
+                "summary": "Find Post by postId",
+                "description": "Find Post by postId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "postId of the ",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "User Not Found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["User"],
+                "summary": "Updated user by Id",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "id",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id that need to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Updated user object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User Update Successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["User"],
+                "summary": "Delete user by Id",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "id",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id that need to be Delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Delete Successfully"
+                    },
+                    "404": {
+                        "description": "User Not Found"
+                    }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "tags": ["User"],
@@ -145,14 +260,15 @@
     "definitions": {
         "Users": {
             "type": "object",
+            "required": ["username", "email"],
             "properties": {
                 "id": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "username": {
                     "type": "string",
-                    "minLength": 3,
-                    "maxLength": 30
+                    "min": 3,
+                    "max": 30
                 },
                 "email": {
                     "type": "string"
@@ -167,15 +283,16 @@
                     "type": "string"
                 },
                 "title": {
-                    "type": "String",
+                    "type": "string",
                     "max": 200,
                     "min": 10
                 },
                 "body": {
-                    "type": "String",
+                    "type": "string",
                     "min": 200
                 },
                 "userId": {
+                    "type":"string",
                     "$ref": "#/definitions/Users"
                 }
             }
@@ -188,19 +305,19 @@
                     "type": "string"
                 },
                 "name": {
-                    "type": "String",
+                    "type": "string",
                     "max": 40,
                     "min": 5
                 },
                 "email": {
-                    "type": "String",
+                    "type": "string",
                     "trim": true,
                     "lowercase": true,
                     "unique": true,
-                    "format":"email"
+                    "format": "email"
                 },
                 "body": {
-                    "type": "String"
+                    "type": "string"
                 },
                 "postId": {
                     "$ref": "#/definitions/Posts"

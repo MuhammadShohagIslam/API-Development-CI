@@ -2,7 +2,6 @@ import { NotFoundError } from "../errors";
 import { User } from "../models/data-models";
 import { UserAttrs } from "../models/data-models/user-model";
 
-
 const createUserService = async (requestBody: UserAttrs) => {
     const { username, email } = requestBody;
 
@@ -17,29 +16,33 @@ const getAllUserService = async () => {
     return users;
 };
 
-const getUserService = async (id: string) => {
-    const user = await User.findById({ _id: id }).exec();
+const getUserService = async (userId: string) => {
+    const user = await User.findById({ _id: userId }).exec();
     if (!user) {
-        throw new NotFoundError(`User Not Found By The Id Of ${id}`);
+        throw new NotFoundError(`User Not Found By The userId Of ${userId}`);
     }
     return user;
 };
 
-const updateUserService = async (id: string, updateData: UserAttrs) => {
-    const updatedUser = await User.findOneAndUpdate({ _id: id }, updateData, {
-        new: true,
-    }).exec();
+const updateUserService = async (userId: string, updateData: UserAttrs) => {
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        updateData,
+        {
+            new: true,
+        }
+    ).exec();
     return updatedUser;
 };
 
-const removeUserService = async (id: string) => {
-    const user = await User.findById({ _id: id }).exec();
+const removeUserService = async (userId: string) => {
+    const user = await User.findById({ _id: userId }).exec();
 
     if (user) {
-        const removeUser = await User.deleteOne({ _id: id });
+        const removeUser = await User.deleteOne({ _id: userId });
         return removeUser;
     }
-    throw new NotFoundError("User Not Found");
+    throw new NotFoundError(`User Not Found By The userId Of ${userId}`);
 };
 
 export {

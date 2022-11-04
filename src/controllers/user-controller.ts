@@ -38,8 +38,8 @@ const getUserHandler = async (
     next: NextFunction
 ) => {
     try {
-        const { id } = req.params;
-        const user = await getUserService(id);
+        const { userId } = req.params;
+        const user = await getUserService(userId);
         res.status(200).json(user);
     } catch (error) {
         next(error);
@@ -47,8 +47,8 @@ const getUserHandler = async (
 };
 
 const updateUserHandler = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const updatedUser = await updateUserService(id, req.body);
+    const { userId } = req.params;
+    const updatedUser = await updateUserService(userId, req.body);
     res.status(201).json(updatedUser);
 };
 
@@ -58,8 +58,8 @@ const removeUserHandler = async (
     next: NextFunction
 ) => {
     try {
-        const { id } = req.params;
-        const removed = await removeUserService(id);
+        const { userId } = req.params;
+        const removed = await removeUserService(userId);
         res.status(200).json(removed);
     } catch (error) {
         next(error);
@@ -68,8 +68,8 @@ const removeUserHandler = async (
 
 router.post("/", validateRequest(userSchema), createUserHandler);
 router.get("/", getAllUserHandler);
-router.get("/:id", getUserHandler);
-router.patch("/:id", validateRequest(userSchema), updateUserHandler);
-router.delete("/:id", removeUserHandler);
+router.get("/:userId", getUserHandler);
+router.patch("/:userId", validateRequest(userSchema), updateUserHandler);
+router.delete("/:userId", removeUserHandler);
 
 export { router as userRouter };

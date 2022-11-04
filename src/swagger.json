@@ -60,7 +60,7 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/users/{userId}": {
             "get": {
                 "tags": ["User"],
                 "summary": "Find user by Id",
@@ -68,7 +68,7 @@
                 "produces": ["application/json"],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "userId",
                         "in": "path",
                         "description": "Id of the user",
                         "required": true,
@@ -146,6 +146,9 @@
         "Users": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "String"
+                },
                 "username": {
                     "type": "string",
                     "minLength": 3,
@@ -153,6 +156,54 @@
                 },
                 "email": {
                     "type": "string"
+                }
+            }
+        },
+        "Posts": {
+            "type": "object",
+            "required": ["title", "body", "userId"],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "String",
+                    "max": 200,
+                    "min": 10
+                },
+                "body": {
+                    "type": "String",
+                    "min": 200
+                },
+                "userId": {
+                    "$ref": "#/definitions/Users"
+                }
+            }
+        },
+        "Comments": {
+            "type": "object",
+            "required": ["name", "email", "postId", "body"],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "String",
+                    "max": 40,
+                    "min": 5
+                },
+                "email": {
+                    "type": "String",
+                    "trim": true,
+                    "lowercase": true,
+                    "unique": true,
+                    "format":"email"
+                },
+                "body": {
+                    "type": "String"
+                },
+                "postId": {
+                    "$ref": "#/definitions/Posts"
                 }
             }
         }

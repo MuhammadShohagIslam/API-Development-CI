@@ -26,7 +26,7 @@
     ],
     "schemes": ["http"],
     "paths": {
-        "/posts":{
+        "/posts": {
             "post": {
                 "tags": ["Post"],
                 "summary": "Create new Post in system",
@@ -60,9 +60,9 @@
                 }
             }
         },
-        "/posts/{postId}":{
+        "/posts/{postId}": {
             "get": {
-                "tags": ["post"],
+                "tags": ["Post"],
                 "summary": "Find Post by postId",
                 "description": "Find Post by postId",
                 "produces": ["application/json"],
@@ -70,7 +70,7 @@
                     {
                         "name": "postId",
                         "in": "path",
-                        "description": "postId of the ",
+                        "description": "postId of the Post",
                         "required": true,
                         "type": "string"
                     }
@@ -80,63 +80,119 @@
                         "description": "Success"
                     },
                     "404": {
-                        "description": "User Not Found"
+                        "description": "Post Not Found by PostId"
                     }
                 }
             },
             "patch": {
-                "tags": ["User"],
-                "summary": "Updated user by Id",
+                "tags": ["Post"],
+                "summary": "Updated Post by postId",
                 "description": "This can only be done by the logged in user.",
-                "operationId": "id",
+                "operationId": "postId",
                 "consumes": ["application/json"],
                 "produces": ["application/json", "application/xml"],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "postId",
                         "in": "path",
-                        "description": "Id that need to be updated",
+                        "description": "postId that need to be updated",
                         "required": true,
                         "type": "string"
                     },
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Updated user object",
+                        "description": "Updated Post object",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "$ref": "#/definitions/Posts"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "User Update Successfully"
+                        "description": "Post Updated Successfully"
                     }
                 }
             },
             "delete": {
-                "tags": ["User"],
-                "summary": "Delete user by Id",
+                "tags": ["Post"],
+                "summary": "Delete Post by postId",
                 "description": "This can only be done by the logged in user.",
                 "operationId": "id",
                 "consumes": ["application/json"],
                 "produces": ["application/json", "application/xml"],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "postId",
                         "in": "path",
-                        "description": "Id that need to be Delete",
+                        "description": "postId that need to be Delete",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "User Delete Successfully"
+                        "description": "Post Delete Successfully"
                     },
                     "404": {
-                        "description": "User Not Found"
+                        "description": "Post Not Found by postId"
+                    }
+                }
+            }
+        },
+        "/posts/users/{userId}": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Find Post by userId",
+                "description": "Find Post by userId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "userId of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Post Not Found by userId"
+                    },
+                    "400": {
+                        "description": "Bad User Request by User"
+                    }
+                }
+            }
+        },
+        "posts/{postId}/comments": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Find Post Comments by postId",
+                "description": "Find Post Comments by postId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "postId of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Post Not Found by postId"
+                    },
+                    "400": {
+                        "description": "Bad User Request by User"
                     }
                 }
             }
@@ -262,9 +318,6 @@
             "type": "object",
             "required": ["username", "email"],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "username": {
                     "type": "string",
                     "min": 3,
@@ -279,9 +332,6 @@
             "type": "object",
             "required": ["title", "body", "userId"],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "title": {
                     "type": "string",
                     "max": 200,
@@ -292,7 +342,7 @@
                     "min": 200
                 },
                 "userId": {
-                    "type":"string",
+                    "type": "string",
                     "$ref": "#/definitions/Users"
                 }
             }
@@ -301,9 +351,6 @@
             "type": "object",
             "required": ["name", "email", "postId", "body"],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string",
                     "max": 40,

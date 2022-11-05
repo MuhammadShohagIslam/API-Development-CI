@@ -28,9 +28,6 @@ interface PostModel extends Model<PostDoc> {
 
 const postSchema = new Schema(
     {
-        postId: {
-            type: String,
-        },
         title: {
             type: String,
             max: 200,

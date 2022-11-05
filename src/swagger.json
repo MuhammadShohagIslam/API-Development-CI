@@ -26,7 +26,303 @@
     ],
     "schemes": ["http"],
     "paths": {
+        "/posts": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Get all Posts in system",
+                "description": "Get all Posts in system",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Post"],
+                "summary": "Create new Post in system",
+                "description": "Create new Post in system",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "body",
+                        "description": "Post that we want to create",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Posts"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "New Post is created"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Find Post by postId",
+                "description": "Find Post by postId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "postId of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Post Not Found by PostId"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Post"],
+                "summary": "Updated Post by postId",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "postId",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "postId that need to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Updated Post By PostId",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostsUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Post Updated Successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Post"],
+                "summary": "Delete Post by postId",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "id",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "postId that need to be Delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post Delete Successfully"
+                    },
+                    "404": {
+                        "description": "Post Not Found by postId"
+                    }
+                }
+            }
+        },
+        "/posts/users/{userId}": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Find Post by userId",
+                "description": "Find Post by userId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "userId of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Post Not Found by userId"
+                    },
+                    "400": {
+                        "description": "Bad User Request by User"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}/comments": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Find Post Comments by postId",
+                "description": "Find Post Comments by postId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "postId of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Post Not Found by postId"
+                    },
+                    "400": {
+                        "description": "Bad User Request by User"
+                    }
+                }
+            }
+        },
+        "/comments": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "Get all Comments in system",
+                "description": "Get all Comments in system",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Comment"],
+                "summary": "Create new Comment in system",
+                "description": "Create new Comment in system",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "body",
+                        "description": "Comment that we want to create",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CommentUpdateSchema"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "New Comment is created"
+                    }
+                }
+            }
+        },
+        "/comments/{commentId}": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "Find Comment by commentId",
+                "description": "Find Comment by commentId",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "commentId of the Comment",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Comment Not Found by commentId"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Comment"],
+                "summary": "Updated Comment by commentId",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "postId",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "commentId that need to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Updated Comment By commentId",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CommentUpdateSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Comment Updated Successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Comment"],
+                "summary": "Delete Comment by commentId",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "id",
+                "consumes": ["application/json"],
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "commentId that need to be Delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment Delete Successfully"
+                    },
+                    "404": {
+                        "description": "Comment Not Found by commentId"
+                    }
+                }
+            }
+        },
         "/users": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Get all users in system",
+                "description": "Get all users in system",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
             "post": {
                 "tags": ["User"],
                 "summary": "Create new user in system",
@@ -48,19 +344,9 @@
                         "description": "New user is created"
                     }
                 }
-            },
-            "get": {
-                "tags": ["User"],
-                "summary": "Get all users in system",
-                "description": "Get all users in system",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
             }
         },
-        "/users/{id}": {
+        "/users/{userId}": {
             "get": {
                 "tags": ["User"],
                 "summary": "Find user by Id",
@@ -68,7 +354,7 @@
                 "produces": ["application/json"],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "userId",
                         "in": "path",
                         "description": "Id of the user",
                         "required": true,
@@ -145,14 +431,94 @@
     "definitions": {
         "Users": {
             "type": "object",
+            "required": ["username", "email"],
             "properties": {
                 "username": {
                     "type": "string",
-                    "minLength": 3,
-                    "maxLength": 30
+                    "min": 3,
+                    "max": 30
                 },
                 "email": {
                     "type": "string"
+                }
+            }
+        },
+        "Posts": {
+            "type": "object",
+            "required": ["title", "body", "userId"],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "max": 200,
+                    "min": 10
+                },
+                "body": {
+                    "type": "string",
+                    "min": 200
+                },
+                "userId": {
+                    "type": "string",
+                    "$ref": "#/definitions/Users"
+                }
+            }
+        },
+        "PostsUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "max": 300,
+                    "min": 5
+                },
+                "body": {
+                    "type": "string"
+                }
+            }
+        },
+        "CommentUpdateSchema": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "max": 40,
+                    "min": 5
+                },
+                "email": {
+                    "type": "string",
+                    "trim": true,
+                    "lowercase": true,
+                    "unique": true,
+                    "format": "email"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                }
+            }
+        },
+        "Comments": {
+            "type": "object",
+            "required": ["name", "email", "postId", "body"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "max": 40,
+                    "min": 5
+                },
+                "email": {
+                    "type": "string",
+                    "trim": true,
+                    "lowercase": true,
+                    "unique": true,
+                    "format": "email"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "postId": {
+                    "$ref": "#/definitions/Posts"
                 }
             }
         }

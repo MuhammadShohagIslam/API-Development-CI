@@ -100,12 +100,12 @@
                         "type": "string"
                     },
                     {
-                        "in": "body",
                         "name": "body",
-                        "description": "Updated Post object",
+                        "in": "body",
+                        "description": "Updated Post By PostId",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Posts"
+                            "$ref": "#/definitions/PostsUpdate"
                         }
                     }
                 ],
@@ -149,7 +149,7 @@
                 "produces": ["application/json"],
                 "parameters": [
                     {
-                        "name": "postId",
+                        "name": "userId",
                         "in": "path",
                         "description": "userId of the Post",
                         "required": true,
@@ -169,7 +169,7 @@
                 }
             }
         },
-        "posts/{postId}/comments": {
+        "/posts/{postId}/comments": {
             "get": {
                 "tags": ["Post"],
                 "summary": "Find Post Comments by postId",
@@ -344,6 +344,20 @@
                 "userId": {
                     "type": "string",
                     "$ref": "#/definitions/Users"
+                }
+            }
+        },
+        "PostsUpdate": {
+            "type": "object",
+            "required": ["title", "body"],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "max": 300,
+                    "min": 5
+                },
+                "body": {
+                    "type": "string"
                 }
             }
         },

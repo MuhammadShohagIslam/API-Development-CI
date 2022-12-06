@@ -1,5 +1,5 @@
 import { NotFoundError } from "../../errors";
-import { UserAttrs } from "../../models/data-models/user-model";
+import { UserAttrs } from "../../types/user-model.type";
 import { User } from "./../../models/data-models";
 
 const users: UserAttrs[] = [
@@ -22,7 +22,7 @@ export const getUserService = async (id: string) => {
 export const createUserService = async (requestBody: UserAttrs) => {
     const { username, email } = requestBody;
 
-    const { _doc } = User.build({ username, email });
+    const { _doc } = User.createNewUser({ username, email });
     users.push(_doc);
     return _doc;
 };

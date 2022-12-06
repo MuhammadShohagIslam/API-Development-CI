@@ -1,14 +1,11 @@
-import { ObjectId } from "mongoose";
 import { NotFoundError } from "../errors";
 import { User } from "../models/data-models";
-import { UserAttrs } from "../models/data-models/user-model";
+import { UserAttrs } from "../types/user-model.type";
 
-const createUserService = async (requestBody: UserAttrs) => {
-    const { username, email } = requestBody;
-
-    const newUser = User.build({ username, email });
+const createUserService = async (user: UserAttrs) => {
+    const { username, email } = user;
+    const newUser = User.createNewUser({ username, email });
     const saveNewUser = await newUser.save();
-
     return saveNewUser;
 };
 

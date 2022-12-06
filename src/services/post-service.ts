@@ -1,7 +1,7 @@
-import { PostAttrs } from "../models/data-models/post-model";
 import { Post } from "../models/data-models";
 import { NotFoundError } from "../errors";
 import { cachingData } from "./cache";
+import { PostAttrs } from "../types/post-model.type";
 
 const createPostService = async (post: PostAttrs) => {
     const newPost = Post.createNewPost(post);
@@ -29,7 +29,6 @@ const getPostByUserIdService = async (userId: string) => {
         userId,
         async () => {
             const data = await Post.find({ user: userId }).exec();
-            console.log(data, "data")
             return data;
         }
     );

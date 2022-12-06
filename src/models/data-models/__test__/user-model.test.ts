@@ -7,7 +7,7 @@ const userData = {
 
 describe("User Model Test Suit", () => {
     test("User Create And Save Successfully", async () => {
-        const user = User.build(userData);
+        const user = User.createNewUser(userData);
 
         const savedUser = await user.save();
 

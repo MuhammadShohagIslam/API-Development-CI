@@ -1,7 +1,7 @@
-import { CommentAttrs } from "../models/data-models/comment-model";
 import { Comment, Post } from "../models/data-models";
 import { BadRequestError, NotFoundError } from "../errors";
 import { cachingData } from "./cache";
+import { CommentAttrs } from "../types/comment-model.type";
 
 const createCommentService = async (comment: CommentAttrs) => {
     const isAlreadyEmailExist = await Comment.findOne({
@@ -44,7 +44,6 @@ const getCommentByPostIdService = async (postId: string) => {
         postId,
         async () => {
             const data = await Comment.find({ postId: postId }).exec();
-            console.log(data, "data");
             return data;
         }
     );

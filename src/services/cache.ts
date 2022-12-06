@@ -24,10 +24,7 @@ const cachingData = async (
             } Not Found By ${paramId}`);
         }
 
-        await client.set(key, JSON.stringify(freshData), {
-            EX: EXPIRATION,
-            NX: true,
-        });
+        await client.set(key, JSON.stringify(freshData), "EX", EXPIRATION);
 
         return freshData;
     } catch (error) {

@@ -1,25 +1,5 @@
-import { Schema, model, Document, Model } from "mongoose";
-
-// An interface describe the properties that required to create a new User
-export interface UserAttrs {
-    username: String;
-    email: String;
-}
-
-// an interface describe the properties that User Document has
-interface UserDoc extends Document {
-    username: String;
-    email: String;
-    _doc: {
-        username: String;
-        email: String;
-    };
-}
-
-// an interface describe the properties that a User Model has
-interface UserModel extends Model<UserDoc> {
-    build(attrs: UserAttrs): UserDoc;
-}
+import { Schema, model } from "mongoose";
+import { UserDoc, UserModel, UserAttrs } from "../../types/user-model.type";
 
 const userSchema = new Schema(
     {
@@ -47,7 +27,7 @@ const userSchema = new Schema(
     }
 );
 
-userSchema.statics.build = (attrs: UserAttrs) => {
+userSchema.statics.createNewUser = (attrs: UserAttrs) => {
     return new User(attrs);
 };
 

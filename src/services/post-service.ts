@@ -29,6 +29,7 @@ const getPostByUserIdService = async (userId: string) => {
         userId,
         async () => {
             const data = await Post.find({ user: userId }).exec();
+            console.log(data, "data")
             return data;
         }
     );

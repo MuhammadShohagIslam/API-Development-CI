@@ -46,6 +46,7 @@ const getPostByUserIdHandler = async (
     next: NextFunction
 ) => {
     try {
+        console.log(req.params.userId)
         const postsByUser = await getPostByUserIdService(req.params.userId);
         res.status(200).json(postsByUser);
     } catch (error) {

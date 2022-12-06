@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { NotFoundError } from "../errors";
 import { User } from "../models/data-models";
 import { UserAttrs } from "../models/data-models/user-model";

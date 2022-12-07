@@ -19,15 +19,12 @@ const cachingData = async (
         const freshData = await callback();
 
         if (freshData.length === 0) {
-            throw `${
+            throw new Error(`${
                 collectionName.charAt(0).toUpperCase() + collectionName.slice(1)
-            } Not Found By ${paramId}`;
+            } Not Found By ${paramId}`);
         }
 
-        await client.set(key, JSON.stringify(freshData), {
-            EX: EXPIRATION,
-            NX: true,
-        });
+        await client.set(key, JSON.stringify(freshData), "EX", EXPIRATION);
 
         return freshData;
     } catch (error) {

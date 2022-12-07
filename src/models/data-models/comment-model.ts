@@ -1,27 +1,10 @@
-import { Schema, model, Document, Model, Types, PopulatedDoc } from "mongoose";
+import { Schema, model } from "mongoose";
 import isEmail from "validator/lib/isEmail";
-
-// an interface describe the properties that required to create new comment
-export interface CommentAttrs {
-    name: string;
-    email: string;
-    body: string;
-    postId:string;
-}
-
-// an interface describe the properties that comment document has
-interface CommentDoc extends Document {
-    name: string;
-    email: string;
-    body: string;
-    postId:PopulatedDoc<Document<Types.ObjectId>>,
-    commentedAt: Date;
-}
-
-// an interface describe the properties that comment model has
-interface CommentModel extends Model<CommentDoc> {
-    createNewComment(attrs: CommentAttrs): CommentDoc;
-}
+import {
+    CommentAttrs,
+    CommentDoc,
+    CommentModel,
+} from "../../types/comment-model.type";
 
 const commentSchema = new Schema(
     {
@@ -51,7 +34,7 @@ const commentSchema = new Schema(
         toJSON: {
             transform(doc, ret) {
                 ret.id = ret._id;
-                ret.commentedAt =ret.createdAt;
+                ret.commentedAt = ret.createdAt;
                 delete ret.createdAt;
                 delete ret._id;
                 delete ret.updatedAt;

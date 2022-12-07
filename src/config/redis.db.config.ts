@@ -1,20 +1,14 @@
-import {
-    createClient,
-    RedisClientType,
-    RedisModules,
-    RedisFunctions,
-    RedisScripts,
-} from "redis";
+import Redis from 'ioredis';
 
-let client: RedisClientType<RedisModules, RedisFunctions, RedisScripts>;
+let client:Redis;
 const connectRedis = async () => {
     try {
-        const redisClient = createClient({
-            url: process.env.REDIS_URL,
-            password: process.env.REDIS_PW,
+        const redis = new Redis({
+            host: process.env.REDIS_URL,
+            port: 19609,
+            password: process.env.REDIS_PW
         });
-        await redisClient.connect();
-        client = redisClient;
+        client = redis;
     } catch (error) {
         console.log(error);
     }

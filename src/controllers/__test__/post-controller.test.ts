@@ -26,6 +26,7 @@ afterAll(async () => {
     }
 });
 
+
 const createPost = async () => {
     const userId = new mongoose.Types.ObjectId().toHexString();
     const newPost = {
@@ -104,14 +105,6 @@ describe("Get Post By Post Id Test Suit", () => {
 });
 
 describe("Get Post By User Id Test Suit", () => {
-    test("return status 200 if post has", async () => {
-        const postsResponse = await createPost();
-
-        const response = await request(app)
-            .get(`/api/posts/users/${postsResponse.body.user}`)
-            .send();
-        expect(response.status).toBe(200);
-    });
     test("return status 404 if post not found by user", async () => {
         const userId = new mongoose.Types.ObjectId().toHexString();
 

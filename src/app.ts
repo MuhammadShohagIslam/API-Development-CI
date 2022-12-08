@@ -1,5 +1,6 @@
 import express from "express";
 import path from 'path';
+import helmet from "helmet";
 import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
@@ -24,6 +25,12 @@ if (process.env.ENVIRONMENT != "TEST") {
 }
 
 rootRouters(app);
+const cspDefaults = helmet.contentSecurityPolicy.getDefaultDirectives();
+delete cspDefaults['upgrade-insecure-requests'];
+
+app.use(helmet({
+    contentSecurityPolicy: { directives: cspDefaults }
+}));
 
 if (process.env.ENVIRONMENT != "TEST") {
     app.use(errorLogger());
@@ -31,7 +38,7 @@ if (process.env.ENVIRONMENT != "TEST") {
 
 app.use(errorHandler);
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, "public")));
 app.use('/', swaggerUi.serve);
 app.get('/', swaggerUi.setup(swaggerDocument, options));
 

@@ -8,7 +8,7 @@
             "name": "MIT"
         }
     },
-    "host": "blog-api-nine-zeta.vercel.app",
+    "host": "blog-api-v2-bay.vercel.app",
     "basePath": "/api",
     "tags": [
         {

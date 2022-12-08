@@ -2,11 +2,11 @@
     "name": "blogapi",
     "version": "1.0.0",
     "description": "",
-    "main": "./build/src/server.js",
+    "main": "build/src/server.js",
     "scripts": {
         "build": "npm install && tsc",
         "dev": "ts-node-dev --no-notify src/server.ts",
-        "start": "node ./build/src/server.js",
+        "start": "node build/src/server.js",
         "test": "jest --watchAll --no-cache"
     },
     "jest": {

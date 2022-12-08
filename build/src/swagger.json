@@ -23,7 +23,6 @@
             "name": "Comment",
             "description": "API for Comment in the Blog Application"
         }
-       
     ],
     "schemes": ["https"],
     "paths": {

@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Fake Blog API Application",
+        "description": "Fake Blog API Application is like CRUD operation blogs post. The key feature is that a user can only able to comment on a specific post, a user can not able to comment on more than one specific post. Another Key feature is that we can get,  how many comments have based on one specific project",
         "version": "1.0.0",
         "title": "Blog API Application",
         "license": {

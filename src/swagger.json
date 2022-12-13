@@ -8,7 +8,7 @@
             "name": "MIT"
         }
     },
-    "host": "blog-api-v2-bay.vercel.app",
+    "host": "localhost:5000",
     "basePath": "/api",
     "tags": [
         {
@@ -25,7 +25,7 @@
         }
        
     ],
-    "schemes": ["https"],
+    "schemes": ["http"],
     "paths": {
         "/users": {
             "get": {

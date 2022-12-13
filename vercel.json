@@ -2,26 +2,14 @@
     "version": 2,
     "builds": [
         {
-            "src": "/src/server.ts",
+            "src": "src/server.ts",
             "use": "@vercel/node"
-        },
-        {
-            "src": "/public/**",
-            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/src/server.ts"
-        },
-        {
-            "src": "/",
-            "dest": "/public/swagger-ui.css"
-        },
-        {
-            "src": "/(.+)",
-            "dest": "/public/$1"
+            "dest": "src/server.ts"
         }
     ]
 }

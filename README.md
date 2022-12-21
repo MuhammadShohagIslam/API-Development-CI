@@ -20,10 +20,7 @@
 <div align="center">
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/users.JPG">
 </div> 
-
-<div align="center">
-    <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/userFull.png">
-</div> 
+ 
 <p>On the User Operations, we can get all user related functionality, like get all user, update, delete, get specific user by userId </p>
 
 ### (GET Method) api/users => Get All Users
@@ -58,9 +55,6 @@
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/posts.JPG">
 </div> 
 
-<div align="center">
-    <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/postFull.png">
-</div> 
 <p>On the Post Operations, we can get all posts related functionality, like get all post, update, delete, get specific post by postId, Get Post By User Id,  Get Posts Comment By postId</p>
 
 ### (GET Method) api/posts => Get All Posts
@@ -103,10 +97,7 @@
 <div align="center">
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/comments.JPG">
 </div> 
-
-<div align="center">
-    <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/commentsFull.png">
-</div> 
+ 
 <p>On the Comment Operations, we can get all comment related functionality, like get all comment, update, delete, get specific comment by commentId </p>
 
 ### (GET Method) api/comments => Get All Comments

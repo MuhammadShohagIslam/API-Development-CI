@@ -8,7 +8,7 @@
 
 ### Description About My Project
 
--   ### Home Page
+## Home Page
 
 <div align="center">
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/home.JPG">
@@ -49,7 +49,7 @@
 </div>
 
 
--   ### Posts Functionality
+## Posts Functionality
 
 <div align="center">
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/posts.JPG">
@@ -92,7 +92,7 @@
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/postDelete.JPG">
 </div>
 
--   ### Comments Functionality
+## Comments Functionality
 
 <div align="center">
     <img width="450" src="https://github.com/MuhammadShohagIslam/API-Development/blob/main/preview/comments.JPG">

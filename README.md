@@ -3,7 +3,7 @@
 
 # Let's Talk About My Blog Rest API With TypeScript
 
-### Blog Rest API Live: [https://blog-h37qgnsyy-muhammadshohagislam.vercel.app/](https://blog-h37qgnsyy-muhammadshohagislam.vercel.app/)
+### Blog Rest API Live: [https://blog-api-swagger.vercel.app/](https://blog-api-swagger.vercel.app/)
 
 
 ### Description About My Project

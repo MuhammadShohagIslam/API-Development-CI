@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes: 
+      - data:/data/db
+    env_file: 
+      - ./env/mongo.env
+  redisCacedb:
+    image: 'redis'
+    volumes: 
+      - redisData:/data
+    env_file: 
+      - ./env/redis.env
+  backend:
+    build: ./
+    image: muhammadshohagislam/blog-api
+    ports:
+      - '5000:5000'
+    volumes: 
+      - logs:/app/logs
+      - ./:/app
+      - /app/node_modules
+    env_file: 
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+      - redisCacedb
+volumes: 
+  data:
+  redisData:
+  logs:

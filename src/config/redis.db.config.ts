@@ -5,7 +5,7 @@ const connectRedis = async () => {
     try {
         const redis = new Redis({
             host: process.env.REDIS_URL,
-            port: 19609,
+            port: parseInt(process.env.REDIS_PORT!),
             password: process.env.REDIS_PW
         });
         client = redis;

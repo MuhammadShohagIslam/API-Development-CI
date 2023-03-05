@@ -1,7 +1,7 @@
-import { Comment, Post } from "../models/data-models";
 import { BadRequestError, NotFoundError } from "../errors";
-import { cachingData } from "./cache";
+import { Comment, Post } from "../models/data-models";
 import { CommentAttrs } from "../types/comment-model.type";
+import { clearHash } from "../caching/cache.v2";
 
 const createCommentService = async (comment: CommentAttrs) => {
     const isAlreadyEmailExist = await Comment.findOne({
@@ -18,6 +18,8 @@ const createCommentService = async (comment: CommentAttrs) => {
     }
     const newComment = Comment.createNewComment(comment);
     const saveNewComment = await newComment.save();
+    // clear the cache
+    clearHash(comment.postId);
     return saveNewComment;
 };
 
@@ -38,21 +40,21 @@ const getCommentByIdService = async (commentId: string) => {
 };
 
 const getCommentByPostIdService = async (postId: string) => {
-    const commentByPost = await cachingData(
-        `posts/${postId}/comments`,
-        Comment.collection.name.slice(0, -1),
-        postId,
-        async () => {
-            const data = await Comment.find({ postId: postId }).exec();
-            return data;
-        }
-    );
+    // version 01 caching
+    // const commentByPost = await cachingData(
+    //     `posts/${postId}/comments`,
+    //     Comment.collection.name.slice(0, -1),
+    //     postId,
+    //     async () => {
+    //         const data = await Comment.find({ postId: postId }).exec();
+    //         return data;
+    //     }
+    // );
 
-    if (commentByPost.length === 0) {
-        throw new NotFoundError(
-            `Comment Not Found By The postId Of ${postId}`
-        );
-    }
+    // version2 caching
+    const commentByPost = await Comment.find({ postId: postId }).cache({
+        key: postId,
+    });
     return commentByPost;
 };
 

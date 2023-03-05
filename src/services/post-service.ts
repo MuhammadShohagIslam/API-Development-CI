@@ -1,6 +1,6 @@
-import { Post } from "../models/data-models";
+import { clearHash } from "../caching/cache.v2";
 import { NotFoundError } from "../errors";
-import { cachingData } from "./cache";
+import { Post,User } from "../models/data-models";
 import { PostAttrs } from "../types/post-model.type";
 
 const createPostService = async (post: PostAttrs) => {
@@ -23,17 +23,14 @@ const getPostByPostIdService = async (postId: string) => {
 };
 
 const getPostByUserIdService = async (userId: string) => {
-    const postsByUser = await cachingData(
-        `posts/users?userId=${userId}`,
-        Post.collection.name,
-        userId,
-        async () => {
-            const data = await Post.find({ user: userId }).exec();
-            return data;
-        }
-    );
-
-    return postsByUser;
+    const user = await User.findById({ _id: userId }).exec();
+    if (!user) {
+        throw new NotFoundError(`User Not Found By The userId Of ${userId}`);
+    }
+    const data = await Post.find({ user: userId }).cache({
+        key: userId,
+    });
+    return data;
 };
 
 const updatePostService = async (

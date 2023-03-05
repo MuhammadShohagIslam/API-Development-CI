@@ -23,7 +23,6 @@
             "name": "Comment",
             "description": "API for Comment in the Blog Application"
         }
-       
     ],
     "schemes": ["http"],
     "paths": {
@@ -58,7 +57,12 @@
                     "201": {
                         "description": "New user is created"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
         },
         "/users/{userId}": {
@@ -114,7 +118,12 @@
                     "201": {
                         "description": "User Update Successfully"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             },
             "delete": {
                 "tags": ["User"],
@@ -139,7 +148,12 @@
                     "404": {
                         "description": "User Not Found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
         },
         "/posts": {
@@ -173,7 +187,12 @@
                     "201": {
                         "description": "New Post is created"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
         },
         "/posts/{postId}": {
@@ -229,7 +248,12 @@
                     "201": {
                         "description": "Post Updated Successfully"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             },
             "delete": {
                 "tags": ["Post"],
@@ -254,7 +278,12 @@
                     "404": {
                         "description": "Post Not Found by postId"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
         },
         "/posts/users/{userId}": {
@@ -282,7 +311,12 @@
                     "400": {
                         "description": "Bad User Request by User"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
         },
         "/posts/{postId}/comments": {
@@ -344,7 +378,12 @@
                     "201": {
                         "description": "New Comment is created"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
         },
         "/comments/{commentId}": {
@@ -369,7 +408,12 @@
                     "404": {
                         "description": "Comment Not Found by commentId"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             },
             "patch": {
                 "tags": ["Comment"],
@@ -400,7 +444,12 @@
                     "201": {
                         "description": "Comment Updated Successfully"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             },
             "delete": {
                 "tags": ["Comment"],
@@ -425,8 +474,20 @@
                     "404": {
                         "description": "Comment Not Found by commentId"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
             }
+        }
+    },
+    "securityDefinitions": {
+        "api_key": {
+            "type": "basic",
+            "name": "Authorization",
+            "in": "header"
         }
     },
     "definitions": {

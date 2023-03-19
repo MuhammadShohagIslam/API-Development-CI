@@ -5,7 +5,8 @@
     "main": "src/server.ts",
     "scripts": {
         "start": "ts-node-dev --respawn --transpile-only src/server.ts",
-        "test": "jest --watchAll --no-cache"
+        "test": "jest --watchAll --no-cache",
+        "test:ci":"jest"
     },
     "jest": {
         "preset": "ts-jest",

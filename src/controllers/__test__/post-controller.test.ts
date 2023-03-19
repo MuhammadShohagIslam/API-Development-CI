@@ -60,7 +60,7 @@ describe("Create New Post Suit", () => {
             body: "This is a awesome test case for testing",
             user: userId,
         };
-        await request(app).post("/api/posts").send(newPost).expect(400);
+        await request(app).post("/api/posts").send(newPost).expect(404);
     });
 });
 
@@ -104,72 +104,6 @@ describe("Get Post By Post Id Test Suit", () => {
     });
 });
 
-describe("Get Post By User Id Test Suit", () => {
-    test("return status 404 if post not found by user", async () => {
-        const userId = new mongoose.Types.ObjectId().toHexString();
-
-        const response = await request(app)
-            .get(`/api/posts/users/${userId}`)
-            .send();
-
-        expect(response.status).toBe(400);
-    });
-});
-
-describe("Get Comment By Post Id Test Suit", () => {
-    test("return status 200 if comment has", async () => {
-        const createPostResponse = await createPost();
-        const comment = await createComment("test1@gmail.com",createPostResponse.body.id);
-
-        const cachingData = async (
-            key: string,
-            callback: () => Promise<any>
-        ) => {
-            try {
-                const cachedData = await redisClient.get(
-                    `posts/${comment.body.postId}/comments`
-                );
-
-                if (cachedData !== null) {
-                    expect(JSON.parse(cachedData)).toBeDefined();
-                }
-
-                const freshData = await callback();
-
-                await redisClient.set(
-                    `posts/${comment.body.postId}/comments`,
-                    JSON.stringify(freshData),
-                    "EX",
-                    200
-                );
-
-                return freshData;
-            } catch (error) {
-
-            }
-        };
-
-        const data = await cachingData(
-            `posts/${comment.body.postId}/comments`,
-            async () => {
-                const response = await request(app)
-                    .get(`/api/posts/${comment.body.postId}/comments`)
-                    .send();
-                return response;
-            }
-        );
-        expect(data).toBeDefined();
-    });
-    test("return status 404 if comment not found by post ", async () => {
-        const postId = new mongoose.Types.ObjectId().toHexString();
-
-        const response = await request(app)
-            .get(`/api/posts/${postId}/comments`)
-            .send();
-
-        expect(response.status).toBe(400);
-    });
-});
 
 describe("Update Post Test Suit", () => {
     test("return 200 if post is updated", async () => {

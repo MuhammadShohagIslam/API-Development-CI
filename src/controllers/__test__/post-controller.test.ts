@@ -37,15 +37,6 @@ const createPost = async () => {
     return await request(app).post("/api/posts").send(newPost);
 };
 
-const createComment = async (email: string, postId:string) => {
-    const newComment = {
-        name: "comment test",
-        email: email,
-        body: "Good Jest Test",
-        postId: postId,
-    };
-    return await request(app).post("/api/comments").send(newComment);
-};
 
 
 describe("Create New Post Suit", () => {
@@ -53,14 +44,14 @@ describe("Create New Post Suit", () => {
         const response = await createPost();
         expect(response.status).toBe(200);
     });
-    test("return 404 if request data is not valid", async () => {
+    test("return 400 if request data is not valid", async () => {
         const userId = new mongoose.Types.ObjectId().toHexString();
         const newPost = {
             title: "",
             body: "This is a awesome test case for testing",
             user: userId,
         };
-        await request(app).post("/api/posts").send(newPost).expect(404);
+        await request(app).post("/api/posts").send(newPost).expect(400);
     });
 });
 

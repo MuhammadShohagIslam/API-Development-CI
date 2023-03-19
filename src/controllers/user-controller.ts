@@ -12,7 +12,7 @@ import {
 const router = express.Router();
 
 // logger
-const log = (msg: any) => console.log(msg);
+// const log = (msg: any) => console.log(msg);
 
 const createUserHandler = async (
     req: Request,
